@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  @apply font-sans font-bold text-3xl m-4;
+  @apply font-sans font-bold text-3xl;
 }
 
 body {
-  @apply bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+  @apply bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-gray-100 p-4;
+}
+
+footer {
+  @apply mt-8 p-4 border-t border-gray-400 dark:border-gray-700 text-center bottom-0 absolute;
 }
