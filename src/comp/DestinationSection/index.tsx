@@ -26,6 +26,47 @@ function DestinationSection() {
       <p onClick={openSummary}>
         {searchSummary === true ? "Searched Page" : "Waiting Page"}
       </p>
+      <form>
+        <h2>What type of adventurer are you?</h2>
+        <div>
+          <input
+            type="radio"
+            id="adventurerChoice1"
+            name="adventurer"
+            value="solo"
+          />
+          <label htmlFor="adventurerChoice1">Solo</label>
+
+          <input
+            type="radio"
+            id="adventurerChoice2"
+            name="adventurer"
+            value="family"
+          />
+          <label htmlFor="adventurerChoice2">Family</label>
+
+          <input
+            type="radio"
+            id="adventurerChoice3"
+            name="adventurer"
+            value="corpo"
+          />
+          <label htmlFor="adventurerChoice3">Corpo</label>
+        </div>
+
+        <input
+          type="text"
+          placeholder="Where are you going?"
+          className="p-2 rounded-md text-black w-full"
+        />
+        <input type="date" className="p-2 rounded-md text-black w-full mt-2" />
+        <input
+          type="text"
+          placeholder="Guests"
+          className="p-2 rounded-md text-black w-full mt-2"
+        />
+        <button type="submit">Search</button>
+      </form>
       <button onClick={goToVenueSearch}>Venue search</button>
     </div>
   );
