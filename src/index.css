@@ -8,7 +8,8 @@
   --color-hdWhite: #f4ede9;
   --color-hdBlack: #23191d;
 
-  --font-sans: "Inter", sans-serif;
+  --font-sans: "Karla", sans-serif;
+  --font-serif: "Spectral", serif;
 }
 
 :root {
@@ -21,4 +22,21 @@ body {
 
 footer {
   @apply mt-8 p-4 border-t border-gray-400 dark:border-gray-700 text-center bottom-0 absolute;
+}
+
+.input-field {
+  @apply p-2 text-hdBlack cursor-pointer bg-hdWhite text-base;
+}
+
+.radio-label {
+  @apply flex flex-col items-center w-full;
+}
+
+.radio-label svg,
+.radio-label span {
+  @apply cursor-pointer p-2 text-hdWhite peer-checked:text-hdYellow;
+}
+
+.radio-label span {
+  @apply text-lg uppercase font-sans tracking-widest;
 }
