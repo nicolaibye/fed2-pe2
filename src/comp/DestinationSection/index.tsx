@@ -59,15 +59,24 @@ function DestinationSection() {
           placeholder="Where are you going?"
           className="p-2 rounded-md text-black w-full"
         />
-        <input type="date" className="p-2 rounded-md text-black w-full mt-2" />
-        <input
-          type="text"
-          placeholder="Guests"
-          className="p-2 rounded-md text-black w-full mt-2"
-        />
-        <button type="submit">Search</button>
+        <div className="flex flex-row gap-2 mt-2">
+          <input
+            type="date"
+            className="datepicker p-2 rounded-md text-black mt-2"
+          />
+          <input
+            type="text"
+            placeholder="Guests"
+            className="p-2 rounded-md text-hdBlack bg-hdWhite mt-2 h-10"
+          />
+        </div>
+        <button
+          onClick={goToVenueSearch}
+          className="text-lg font-bold w-full h-10 text-hdBlack bg-hdYellow"
+        >
+          Let's explore!
+        </button>
       </form>
-      <button onClick={goToVenueSearch}>Venue search</button>
     </div>
   );
 }
