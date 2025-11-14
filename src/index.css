@@ -34,9 +34,9 @@ footer {
 
 .radio-label svg,
 .radio-label span {
-  @apply cursor-pointer p-2 text-hdWhite peer-checked:text-hdYellow;
+  @apply cursor-pointer p-1 text-hdWhite peer-checked:text-hdYellow transition-colors duration-500;
 }
 
 .radio-label span {
-  @apply text-lg uppercase font-sans tracking-widest;
+  @apply text-base uppercase font-sans tracking-widest;
 }
