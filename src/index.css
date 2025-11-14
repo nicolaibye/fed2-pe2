@@ -1,11 +1,22 @@
 @import "tailwindcss";
 
+@theme {
+  --color-hdRed: #760933;
+  --color-hdRedAccent: #6e002b;
+  --color-hdOrange: #ec4e20;
+  --color-hdYellow: #ff9505;
+  --color-hdWhite: #f4ede9;
+  --color-hdBlack: #23191d;
+
+  --font-sans: "Inter", sans-serif;
+}
+
 :root {
-  @apply font-sans font-bold text-3xl;
+  @apply font-sans;
 }
 
 body {
-  @apply bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-gray-100 p-4;
+  @apply bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
 }
 
 footer {
