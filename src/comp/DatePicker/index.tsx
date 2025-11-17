@@ -4,8 +4,10 @@ import { DateRange } from "react-date-range";
 import type { Range, OnChangeProps } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import { useSearchContext } from "../../context/SearchContext/useSearchContext";
 
 function DatePicker() {
+  const { isSummary: searchSummary } = useSearchContext();
   const [open, setOpen] = useState(false);
   const [range, setRange] = useState<Range[]>([
     {
@@ -28,7 +30,7 @@ function DatePicker() {
         onClick={() => setOpen(!open)}
         value={formatted}
         placeholder="Dates"
-        className="input-field"
+        className={`input-field ${searchSummary ? "hidden peer-checked:flex" : ""} cut-corner`}
       />
       {open && (
         <DateRange
