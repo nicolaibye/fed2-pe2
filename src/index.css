@@ -1,13 +1,55 @@
 @import "tailwindcss";
 
+@theme {
+  --color-hdRed: #760933;
+  --color-hdRedAccent: #6e002b;
+  --color-hdOrange: #ec4e20;
+  --color-hdYellow: #ff9505;
+  --color-hdWhite: #f4ede9;
+  --color-hdBlack: #23191d;
+
+  --font-sans: "Karla", sans-serif;
+  --font-serif: "Spectral", serif;
+}
+
 :root {
-  @apply font-sans font-bold text-3xl;
+  @apply font-sans;
 }
 
 body {
-  @apply bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-gray-100 p-4;
+  @apply bg-hdWhite text-hdBlack transition-colors duration-500;
 }
 
 footer {
   @apply mt-8 p-4 border-t border-gray-400 dark:border-gray-700 text-center bottom-0 absolute;
+}
+
+.input-field {
+  @apply p-2 text-hdBlack cursor-pointer bg-hdWhite text-base;
+}
+
+.radio-label {
+  @apply flex-col items-center w-full text-hdWhite peer-checked:text-hdYellow overflow-hidden;
+}
+
+.radio-label svg,
+.radio-label span {
+  @apply cursor-pointer p-1 transition-colors duration-500;
+}
+
+.radio-label span {
+  @apply text-sm uppercase font-sans tracking-widest;
+}
+
+.cut-corner {
+  clip-path: polygon(
+    6px 0,
+    calc(100% - 6px) 0,
+    100% 6px,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    6px 100%,
+    0 calc(100% - 6px),
+    0 6px
+  );
 }
