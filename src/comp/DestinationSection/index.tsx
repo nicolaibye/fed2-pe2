@@ -25,7 +25,7 @@ function DestinationSection() {
     <div
       className={`${venuePage || homePage ? "flex" : "hidden"} flex-col w-full bg-hdRed text-hdWhite p-4 relative`}
     >
-      <div className="absolute inset-1 bg-[url(public/SwirlPattern.svg)] w-full h-full top-0 left-0 bg-repeat"></div>
+      <div className="absolute inset-1 bg-[url(/SwirlPattern.svg)] w-full h-full top-0 left-0 bg-repeat"></div>
       <form className={`flex flex-col ${searchSummary ? "" : "gap-3"} z-10`}>
         <h2
           className={`text-base font-serif font-light text-center ${searchSummary ? "hidden" : "block"}`}
