@@ -13,7 +13,7 @@ function NewsCard() {
         <circle cx="20" cy="20" r="19.5" stroke="#23191D" />
       </svg>
       <div className="font-sans flex flex-col gap-1 text-center">
-        <h3 className="text-2xl font-serif font-bold">
+        <h3 className="text-2xl font-serif font-bold leading-6">
           We believe in the people
         </h3>
         <p className="leading-4">
