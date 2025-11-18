@@ -1,9 +1,12 @@
 import { useSearchContext } from "../../context/SearchContext/useSearchContext";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "../DatePicker";
+import { useContext } from "react";
+import AdventureContext from "../../context/AdventureContext";
 
 function DestinationSection() {
   const { isSummary: searchSummary } = useSearchContext();
+  const { adventureType, setAdventureType } = useContext(AdventureContext);
   const { setIsSummary } = useSearchContext();
   const navigate = useNavigate();
 
@@ -41,6 +44,8 @@ function DestinationSection() {
               id="adventurerChoice1"
               name="adventurer"
               value="affulent"
+              checked={adventureType === "affluent"}
+              onChange={() => setAdventureType("affluent")}
               className="peer hidden"
             />
             <label
@@ -112,6 +117,8 @@ function DestinationSection() {
               id="adventurerChoice2"
               name="adventurer"
               value="guardian"
+              checked={adventureType === "guardian"}
+              onChange={() => setAdventureType("guardian")}
               className="peer hidden"
             />
             <label
@@ -219,6 +226,8 @@ function DestinationSection() {
               id="adventurerChoice3"
               name="adventurer"
               value="explorer"
+              checked={adventureType === "explorer"}
+              onChange={() => setAdventureType("explorer")}
               className="peer hidden"
             />
             <label
