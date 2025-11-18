@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 function Nav() {
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-hdRed h-14 text-center font-medium">
+    <nav className="fixed bottom-0 left-0 w-full bg-hdRed h-14 text-center font-medium z-1000">
       <ul className="flex p-2 text-xs">
         <li className="flex-1">
           <Link to="/">
