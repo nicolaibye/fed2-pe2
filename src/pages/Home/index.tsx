@@ -1,5 +1,6 @@
 import InspireCard from "../../comp/InspireCard";
 import NewsCard from "../../comp/NewsCard";
+import VenueLandscapeListing from "../../comp/VenueLandscapeListing";
 
 function Home() {
   return (
@@ -54,6 +55,16 @@ function Home() {
             body="A place shaped by adventure and respect for the land. New Zealand pushes you toward bold choices, bigger horizons, and a mindset grounded in exploration."
             link="/"
           />
+        </ul>
+      </section>
+      <section>
+        <h2 className="text-2xl font-serif font-bold mb-2">We recommend</h2>
+        <ul className="flex flex-row flex-nowrap gap-2.5 md:gap-0 overflow-x-scroll md:overflow-x-auto justify-start md:justify-center rounded-xs">
+          <VenueLandscapeListing />
+          <VenueLandscapeListing />
+          <VenueLandscapeListing />
+          <VenueLandscapeListing />
+          <VenueLandscapeListing />
         </ul>
       </section>
     </div>
