@@ -68,22 +68,28 @@
 // }
 
 import { useAdventureContext } from "../../context/AdventureContext/useAdventureContext";
+import {
+  CarSimpleIcon,
+  WifiHighIcon,
+  AvocadoIcon,
+  PawPrintIcon,
+} from "@phosphor-icons/react";
 
 function VenueLandscapeListing() {
   // const { id, name, description, media, price, rating } = data;
   const { adventureType } = useAdventureContext();
   return (
     <li
-      className={`w-[90%] h-52 rounded-sm flex ${adventureType === "affluent" ? "flex-col" : "flex-row"} `}
+      className={`w-[90%] shrink-0 h-52 rounded-sm flex ${adventureType === "affluent" ? "flex-col" : "flex-row"} `}
     >
       <img
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR3p565lkyXBLlkNemqfGmUAWtVxN5XT6cQg&s"
         alt=""
         className={`flex-1 object-cover ${adventureType === "affluent" ? "w-full min-h-0" : "h-full min-w-2"} `}
       />
-      <div className="flex flex-row">
+      <div className="flex flex-row ">
         <div
-          className={`font-sans w-60 bg-hdYellow p-2 flex flex-col gap-2 ${adventureType === "affluent" ? "" : "justify-between"}`}
+          className={`font-sans flex-5 bg-hdYellow p-2 flex flex-col gap-2 ${adventureType === "affluent" ? "" : "justify-between"}`}
         >
           {adventureType === "affluent" ? (
             <>
@@ -104,7 +110,7 @@ function VenueLandscapeListing() {
           ) : (
             <>
               <div>
-                <h3 className="font-sans font-bold leading-5">
+                <h3 className="font-sans font-bold leading-5 max-w-44">
                   Clarion Hotel The Hub
                 </h3>
                 <p>Milan, Italy</p>
@@ -116,10 +122,22 @@ function VenueLandscapeListing() {
                 <ul
                   className={`flex flex-col text-hdRed text-sm ${adventureType === "explorer" ? "block" : "hidden"} `}
                 >
-                  <li>Wifi</li>
-                  <li>Parking</li>
-                  <li>Breakfast</li>
-                  <li>Pets allowed</li>
+                  <li className="flex flex-row items-center gap-1.5 relative h-5">
+                    <WifiHighIcon size={16} className="mb-1" />
+                    <p className="leading-3">Wifi</p>
+                  </li>
+                  <li className="flex flex-row items-center gap-1.5 relative h-5">
+                    <CarSimpleIcon size={16} className="mb-1" />
+                    <p className="leading-3">Parking</p>
+                  </li>
+                  <li className="flex flex-row items-center gap-1.5 relative h-5">
+                    <AvocadoIcon size={16} className="mb-1" />
+                    <p className="leading-3">Breakfast</p>
+                  </li>
+                  <li className="flex flex-row items-center gap-1.5 relative h-5">
+                    <PawPrintIcon size={16} className="mb-1" />
+                    <p className="leading-3">Pets allowed</p>
+                  </li>
                 </ul>
               </div>
               <div>
@@ -137,7 +155,7 @@ function VenueLandscapeListing() {
           )}
         </div>
         <button
-          className={`bg-hdRed font-light text-hdWhite leading-5 ${adventureType === "affluent" ? "block" : "hidden"} `}
+          className={`bg-hdRed font-light text-hdWhite leading-5 aspect-square flex-2 ${adventureType === "affluent" ? "block" : "hidden"} `}
         >
           Express Booking
         </button>
