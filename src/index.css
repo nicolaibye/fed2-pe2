@@ -13,7 +13,7 @@
 }
 
 :root {
-  @apply font-sans;
+  @apply font-sans [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
 }
 
 body {
