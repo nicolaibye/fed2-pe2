@@ -10,6 +10,8 @@
 
   --font-sans: "Karla", sans-serif;
   --font-serif: "Spectral", serif;
+
+  --breakpoint-xs: 425px;
 }
 
 :root {
@@ -52,4 +54,8 @@ footer {
     0 calc(100% - 6px),
     0 6px
   );
+}
+
+.square-venue-label {
+  @apply text-sm font-light px-3 md:px-2 py-1 md:py-0.5 bg-hdRed text-hdWhite rounded-full;
 }
