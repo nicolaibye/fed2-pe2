@@ -60,6 +60,30 @@ footer {
   @apply text-sm font-light px-3 md:px-2 py-1 md:py-0.5 bg-hdRed text-hdWhite rounded-full;
 }
 
+.filter-label {
+  @apply text-sm font-light px-3 md:px-2 py-1 md:py-0.5 bg-hdWhite text-hdBlack peer-checked:bg-hdYellow rounded-full shadow transition duration-75;
+}
+
 .custom-checkbox {
   @apply w-4 h-4 flex items-center justify-center border border-hdBlack rounded-xs peer-checked:bg-hdYellow peer-checked:border-hdYellow [&>svg]:hidden peer-checked:[&>svg]:block transition-all duration-75;
+}
+
+.circle-button {
+  @apply w-9 h-9 flex items-center justify-center rounded-full bg-hdRed text-hdWhite;
+}
+
+.filter {
+  @apply hidden;
+}
+
+.filter.open {
+  @apply flex;
+}
+
+.filter-badge {
+  @apply aspect-square w-4 hidden items-center justify-center bg-hdYellow rounded-full absolute -top-1.5 -right-1.5 text-xs;
+}
+
+.filter-badge.open {
+  @apply flex;
 }
