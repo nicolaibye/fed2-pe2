@@ -80,7 +80,7 @@ function VenueLandscapeListing() {
   const { adventureType } = useAdventureContext();
   return (
     <li
-      className={`w-[90%] shrink-0 h-52 rounded-sm flex ${adventureType === "affluent" ? "flex-col" : "flex-row"} `}
+      className={`w-[90%] max-w-90 shrink-0 h-52 rounded-sm flex ${adventureType === "affluent" ? "flex-col" : "flex-row"} `}
     >
       <img
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR3p565lkyXBLlkNemqfGmUAWtVxN5XT6cQg&s"
