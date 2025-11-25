@@ -203,7 +203,7 @@ function FilterButton() {
           )}
         </div>
       </form>
-      <div className="fixed bottom-18 right-3 flex flex-col items-end gap-2 z-1000">
+      <div className="fixed bottom-18 right-3 flex md:hidden flex-col items-end gap-2 z-1000">
         <form action="" id="filter" className="filter flex-col gap-2">
           <div className="flex flex-col-reverse items-end gap-2">
             <div className="relative">
