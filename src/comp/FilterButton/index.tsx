@@ -12,9 +12,12 @@ import {
 
 function FilterButton() {
   const openFilter = () => {
+    const button = document.getElementById("filterButton");
     const filter = document.getElementById("filter");
     const badge = document.getElementById("filterOverallCount");
     filter?.classList.toggle("open");
+
+    button?.classList.toggle("open");
 
     if (filter?.classList.contains("open")) {
       badge?.classList.remove("open");
@@ -45,10 +48,12 @@ function FilterButton() {
     const wrapper = e.currentTarget.closest("div.flex-col-reverse");
     if (!wrapper) return;
 
+    const button = wrapper.querySelector(".circle-button");
     const options = wrapper.querySelector(".filter");
     const badge = wrapper.querySelector(".filter-badge");
 
     options?.classList.toggle("open");
+    button?.classList.toggle("open");
 
     if (options?.classList.contains("open")) {
       badge?.classList.remove("open");
@@ -349,7 +354,11 @@ function FilterButton() {
           <div id="filterOverallCount" className="filter-badge">
             0
           </div>
-          <button onClick={openFilter} className="circle-button">
+          <button
+            id="filterButton"
+            onClick={openFilter}
+            className="circle-button"
+          >
             <FunnelSimpleIcon size={16} weight="bold" />
           </button>
         </div>

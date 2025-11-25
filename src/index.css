@@ -72,6 +72,10 @@ footer {
   @apply w-9 h-9 flex items-center justify-center rounded-full bg-hdRed text-hdWhite;
 }
 
+.circle-button.open {
+  @apply bg-hdOrange;
+}
+
 .filter {
   @apply hidden;
 }
