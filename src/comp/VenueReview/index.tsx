@@ -20,12 +20,13 @@ function VenueReview() {
 
   const shortText = review.description.substring(0, 180);
   const shouldShorten = review.description.length > 180;
+  const smallScreen = window.innerWidth > 1024;
 
-  const textToShow = expanded ? review.description : shortText;
-  const buttonText = expanded ? "Read less" : "Read more";
+  const textToShow = expanded || smallScreen ? review.description : shortText;
+  const buttonText = expanded ? "...Read less" : "...Read more";
 
   return (
-    <li className="w-[90%] max-w-90 shrink-0 h-auto">
+    <li className="w-[90%] max-w-90 lg:max-w-none lg:w-full shrink-0 h-auto">
       <div className="flex flex-col gap-2">
         <div className="flex flex-row items-center gap-3">
           <h3 className="font-bold leading-3">{reviewMockup[0].name}</h3>
@@ -47,16 +48,21 @@ function VenueReview() {
           {textToShow}{" "}
           {!expanded && shouldShorten ? (
             <>
-              ...{" "}
-              <button onClick={() => setExpanded(true)} className="font-bold">
+              <button
+                onClick={() => setExpanded(true)}
+                className="font-bold lg:hidden"
+              >
                 {buttonText}
               </button>
             </>
           ) : (
             <>
               <br />
-              <button onClick={() => setExpanded(false)} className="font-bold">
-                Read less
+              <button
+                onClick={() => setExpanded(false)}
+                className="font-bold lg:hidden"
+              >
+                {buttonText}
               </button>
             </>
           )}
