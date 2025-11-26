@@ -56,6 +56,10 @@ footer {
   );
 }
 
+.base-shadow {
+  @apply drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)];
+}
+
 .square-venue-label {
   @apply text-sm font-light px-3 md:px-2 py-1 md:py-0.5 bg-hdRed text-hdWhite rounded-full;
 }
@@ -90,4 +94,12 @@ footer {
 
 .filter-badge.open {
   @apply flex;
+}
+
+.rating-star {
+  @apply bg-hdRed h-2 w-2 rounded-full;
+}
+
+.rating-star.empty {
+  @apply bg-hdRed/25;
 }
