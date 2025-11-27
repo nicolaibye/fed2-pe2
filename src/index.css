@@ -103,3 +103,7 @@ footer {
 .rating-star.empty {
   @apply bg-hdRed/25;
 }
+
+.second-heading {
+  @apply text-lg font-serif font-bold leading-4;
+}
