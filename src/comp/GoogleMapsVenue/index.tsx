@@ -8,11 +8,11 @@ function GoogleMapsVenue() {
     if (map?.classList.contains("aspect-video")) {
       map.classList.add("aspect-square");
       map.classList.remove("aspect-video");
-      setExpanded(false);
+      setExpanded(true);
     } else {
       map?.classList.add("aspect-video");
       map?.classList.remove("aspect-square");
-      setExpanded(true);
+      setExpanded(false);
     }
   };
   return (
@@ -34,9 +34,9 @@ function GoogleMapsVenue() {
         className="absolute top-3 right-3 p-2 bg-hdYellow rounded-full"
       >
         {expanded ? (
-          <ArrowsOutSimpleIcon size={24} weight="regular" />
-        ) : (
           <ArrowsInSimpleIcon size={24} weight="regular" />
+        ) : (
+          <ArrowsOutSimpleIcon size={24} weight="regular" />
         )}
       </button>
     </div>

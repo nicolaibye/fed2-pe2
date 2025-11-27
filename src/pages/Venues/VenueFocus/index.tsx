@@ -17,7 +17,7 @@ function VenueFocus() {
   const [hearted, setHearted] = useState(false);
   return (
     <>
-      <section className="relative h-auto aspect-square md:aspect-auto md:h-[50vh] -mx-5 -mt-5">
+      <section className="relative h-auto aspect-square md:aspect-auto md:h-[50vh] -mx-5 -mt-5 md:-mx-10 md:-mt-10">
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR3p565lkyXBLlkNemqfGmUAWtVxN5XT6cQg&s"
           alt=""
@@ -79,7 +79,7 @@ function VenueFocus() {
             </ul>
           </div>
           <section className="mt-5 flex flex-col gap-2">
-            <h2 className="text-xl font-serif font-bold leading-4.5">Rating</h2>
+            <h2 className="second-heading">Rating</h2>
             <div className="flex flex-row items-center gap-2 text-base">
               <p className="font-bold">4.77</p>
               <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
@@ -87,9 +87,7 @@ function VenueFocus() {
             </div>
           </section>
           <section className="mt-5 flex flex-col gap-2">
-            <h2 className="text-xl font-serif font-bold leading-4.5">
-              Location
-            </h2>
+            <h2 className="second-heading">Location</h2>
             <GoogleMapsVenue />
             <div>
               <ul>
@@ -124,7 +122,7 @@ function VenueFocus() {
             </div>
           </section>
           <section className="mt-5 flex flex-col gap-2">
-            <h2 className="text-xl font-serif font-bold leading-4.5">About</h2>
+            <h2 className="second-heading">About</h2>
             <p className="leading-4">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
               ultrices ligula ac quam viverra porttitor. Phasellus libero magna,
@@ -170,9 +168,7 @@ function VenueFocus() {
             </form>
           </section>
           <section className="mt-5 flex flex-col gap-2 -mr-5">
-            <h2 className="text-xl font-serif font-bold leading-4.5">
-              Reviews
-            </h2>
+            <h2 className="second-heading">Reviews</h2>
             <ul className="flex flex-row lg:flex-col overflow-x-scroll lg:overflow-x-auto overflow-y-hidden gap-4">
               <VenueReview />
               <VenueReview />
@@ -181,9 +177,7 @@ function VenueFocus() {
             </ul>
           </section>
           <section className="mt-5 flex flex-col gap-2">
-            <h2 className="text-xl font-serif font-bold leading-4.5">
-              Similar Venues
-            </h2>
+            <h2 className="second-heading">Similar Venues</h2>
             <ul className="flex flex-row gap-2 overflow-x-scroll rounded-xs">
               <VenueLandscapeListing />
               <VenueLandscapeListing />
@@ -193,9 +187,7 @@ function VenueFocus() {
           </section>
           <section className="mb-15 md:mb-5">
             <div className="mt-5 flex flex-col gap-2">
-              <h2 className="text-xl font-serif font-bold leading-4.5">
-                Information
-              </h2>
+              <h2 className="second-heading">Information</h2>
               <p className="leading-4">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
                 ultrices ligula ac quam viverra porttitor. Phasellus libero
@@ -206,9 +198,7 @@ function VenueFocus() {
               </p>
             </div>
             <div className="mt-5 flex flex-col gap-2">
-              <h3 className="text-xl font-serif font-bold leading-4.5">
-                Policies
-              </h3>
+              <h3 className="second-heading">Policies</h3>
               <p className="leading-4">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
                 ultrices ligula ac quam viverra porttitor. Phasellus libero

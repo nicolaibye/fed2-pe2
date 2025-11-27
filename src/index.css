@@ -6,6 +6,7 @@
   --color-hdOrange: #ec4e20;
   --color-hdYellow: #ff9505;
   --color-hdWhite: #f4ede9;
+  --color-hdWhiteAccent: #ebddd5;
   --color-hdBlack: #23191d;
 
   --font-sans: "Karla", sans-serif;
@@ -60,6 +61,10 @@ footer {
   @apply drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)];
 }
 
+.outline-shadow-red {
+  @apply drop-shadow-[0_1px_0_rgba(118,9,51,1),0_-1px_0_rgba(118,9,51,1),-1px_0_0_rgba(118,9,51,1),1px_0_0_rgba(118,9,51,1)];
+}
+
 .square-venue-label {
   @apply text-sm font-light px-3 md:px-2 py-1 md:py-0.5 bg-hdRed text-hdWhite rounded-full;
 }
@@ -102,4 +107,8 @@ footer {
 
 .rating-star.empty {
   @apply bg-hdRed/25;
+}
+
+.second-heading {
+  @apply text-lg font-serif font-bold leading-4;
 }
