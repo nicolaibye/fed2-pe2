@@ -7,7 +7,7 @@ function Error() {
       <div className="relative flex flex-col items-center justify-center h-screen -mb-20 -mx-5 -mt-5 md:-mx-10 md:-mt-10 bg-hdYellow">
         <Link
           to="/"
-          className="absolute top-5 left-5 z-100 bg-hdRed rounded-full flex flex-row items-center gap-2"
+          className="absolute md:hidden top-5 left-5 z-100 bg-hdRed rounded-full flex flex-row items-center gap-2"
         >
           <div className="circle-button base-shadow">
             <CaretLeftIcon weight="bold" size={20} className="text-hdWhite " />
