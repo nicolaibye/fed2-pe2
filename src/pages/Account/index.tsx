@@ -1,3 +1,4 @@
+import PreviousTripsCard from "../../comp/PreviousTripsCard";
 import UpcomingTrip from "../../comp/UpcomingTrip";
 
 function Account() {
@@ -38,8 +39,8 @@ function Account() {
       </section>
       <section className="mt-5 flex flex-col gap-2">
         <h2 className="second-heading">Previous trips</h2>
-        <ul>
-          <li></li>
+        <ul className="flex flex-col gap-4">
+          <PreviousTripsCard />
         </ul>
       </section>
       <section className="mt-5 flex flex-col gap-2">
