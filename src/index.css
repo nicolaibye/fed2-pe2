@@ -58,7 +58,7 @@ footer {
 }
 
 .base-shadow {
-  @apply drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)];
+  @apply drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)];
 }
 
 .outline-shadow-red {
@@ -77,8 +77,16 @@ footer {
   @apply w-4 h-4 flex items-center justify-center border border-hdBlack rounded-xs peer-checked:bg-hdYellow peer-checked:border-hdYellow [&>svg]:hidden peer-checked:[&>svg]:block transition-all duration-75;
 }
 
+.custom-checkbox.register {
+  @apply border-hdWhite bg-hdWhite peer-checked:bg-hdYellow peer-checked:border-hdYellow [&>svg]:hidden peer-checked:[&>svg]:block transition-all duration-75;
+}
+
 .circle-button {
   @apply w-9 h-9 flex items-center justify-center rounded-full bg-hdRed text-hdWhite;
+}
+
+.circle-button.home {
+  @apply bg-hdYellow;
 }
 
 .circle-button.open {

@@ -8,7 +8,9 @@ import { NavLink } from "react-router";
 
 function Nav() {
   return (
-    <nav className="fixed bottom-0 left-0 md:shadow-[0px_2px_6px_0px_rgba(0,0,0,0.25)]  md:aboslute md:top-4 md:bottom-auto md:left-auto md:right-4 w-full md:w-auto text-hdWhite md:rounded-full h-auto text-center font-medium z-1000">
+    <nav
+      className={`fixed bottom-0 left-0 md:shadow-[0px_2px_6px_0px_rgba(0,0,0,0.25)] md:aboslute md:top-4 md:bottom-auto md:left-auto md:right-4 w-full md:w-auto text-hdWhite md:rounded-full h-auto text-center font-medium z-1000`}
+    >
       <ul className="flex text-xs">
         <li className="flex-1">
           <NavLink

@@ -346,12 +346,14 @@ function DestinationSection() {
             24.01.2025 til 30.01.2025
           </p>
         </div>
-        <input
-          type="text"
-          placeholder="Where are you going?"
-          className={`input-field ${searchSummary ? "hidden peer-checked:flex" : ""} cut-corner`}
-        />
-        <div className="grid grid-cols-2 gap-3 w-full relative">
+        <div className="w-full base-shadow">
+          <input
+            type="text"
+            placeholder="Where are you going?"
+            className={`input-field w-full ${searchSummary ? "hidden peer-checked:flex" : ""} cut-corner`}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-3 w-full relative base-shadow">
           <DatePicker />
           <input
             type="text"
@@ -359,13 +361,15 @@ function DestinationSection() {
             className={`input-field ${searchSummary ? "hidden peer-checked:flex" : ""} cut-corner`}
           />
         </div>
-        <button
-          type="submit"
-          onClick={goToVenueSearch}
-          className={`text-xl font-extrabold font-serif w-full h-10 text-hdBlack bg-hdYellow drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] cut-corner ${searchSummary ? "hidden peer-checked:flex" : ""}`}
-        >
-          Let's explore!
-        </button>
+        <div className="base-shadow">
+          <button
+            type="submit"
+            onClick={goToVenueSearch}
+            className={`text-xl font-extrabold font-serif w-full h-10 text-hdBlack bg-hdYellow cut-corner ${searchSummary ? "hidden peer-checked:flex" : ""}`}
+          >
+            Let's explore!
+          </button>
+        </div>
       </form>
     </div>
   );
