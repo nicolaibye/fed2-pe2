@@ -365,7 +365,7 @@ function DestinationSection() {
           <button
             type="submit"
             onClick={goToVenueSearch}
-            className={`text-xl font-extrabold font-serif w-full h-10 text-hdBlack bg-hdYellow drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] cut-corner ${searchSummary ? "hidden peer-checked:flex" : ""}`}
+            className={`text-xl font-extrabold font-serif w-full h-10 text-hdBlack bg-hdYellow cut-corner ${searchSummary ? "hidden peer-checked:flex" : ""}`}
           >
             Let's explore!
           </button>
