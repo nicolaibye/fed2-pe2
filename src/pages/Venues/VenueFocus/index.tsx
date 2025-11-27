@@ -17,7 +17,7 @@ function VenueFocus() {
   const [hearted, setHearted] = useState(false);
   return (
     <>
-      <section className="relative h-auto aspect-square md:aspect-auto md:h-[50vh] -mx-5 -mt-5">
+      <section className="relative h-auto aspect-square md:aspect-auto md:h-[50vh] -mx-5 -mt-5 md:-mx-10 md:-mt-10">
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR3p565lkyXBLlkNemqfGmUAWtVxN5XT6cQg&s"
           alt=""
