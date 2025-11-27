@@ -23,10 +23,6 @@ body {
   @apply bg-hdWhite text-hdBlack transition-colors duration-500;
 }
 
-footer {
-  @apply mt-8 p-4 border-t border-gray-400 dark:border-gray-700 text-center bottom-0 absolute;
-}
-
 .input-field {
   @apply p-2 text-hdBlack cursor-pointer bg-hdWhite text-base;
 }
