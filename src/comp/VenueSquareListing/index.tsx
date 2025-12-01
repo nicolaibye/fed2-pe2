@@ -1,35 +1,20 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useAdventureContext } from "../../context/AdventureContext/useAdventureContext";
+import { useApi } from "../../hook/useApi";
+import type { Venue } from "../../types/venue.ts";
+import { addExtraLabels } from "../../js/helper/addExtraLabels.tsx";
+import { StarIcon } from "@phosphor-icons/react";
 
 const url = "https://v2.api.noroff.dev/holidaze/venues";
 
 function VenueSquareListing() {
   const { adventureType } = useAdventureContext();
-
-  const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(null);
-  const [errorMessage, setErrorMessage] = useState([]);
-
-  useEffect(() => {
-    async function getData() {
-      try {
-        setIsError(false);
-        setIsLoading(true);
-        const response = await fetch(url);
-        const data = await response.json();
-        setPosts(data);
-
-        setIsLoading(false);
-      } catch (error) {
-        setErrorMessage(error);
-        setIsLoading(false);
-        setIsError(true);
-      }
-    }
-
-    getData();
-  }, []);
+  const { data: posts, isLoading, isError } = useApi<Venue>(url);
+  const errorMessage = "Please try again later.";
+  const venues = useMemo(() => {
+    if (!posts) return null;
+    return addExtraLabels(posts);
+  }, [posts]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -41,15 +26,15 @@ function VenueSquareListing() {
 
   return (
     <>
-      {posts.map((post) => (
+      {venues?.map((post) => (
         <li
           key={post.id}
           className={`w-full shrink-0 h-auto aspect-square flex flex-col`}
         >
-          <div className="flex-1 object-cover relative">
+          <div className="flex-1 relative h-full w-full overflow-hidden">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR3p565lkyXBLlkNemqfGmUAWtVxN5XT6cQg&s"
-              alt=""
+              src={post.media[0].url}
+              alt={post.media[0].alt}
               className="object-cover w-full h-full rounded-t-xs"
             />
             {adventureType === "affluent" ? (
@@ -63,21 +48,34 @@ function VenueSquareListing() {
                 <ul
                   className={`flex flex-row flex-wrap gap-1 absolute bottom-2 left-2 ${adventureType === "guardian" ? "block" : "hidden"} `}
                 >
-                  <li className="square-venue-label w-fit">
-                    Free cancellation
-                  </li>
-                  <li className="square-venue-label">
-                    Total include taxes and fees
-                  </li>
+                  {post.policies.freeCancellation && (
+                    <li className="square-venue-label w-fit">
+                      Free cancellation
+                    </li>
+                  )}
+                  {post.policies.includesTaxes && (
+                    <li className="square-venue-label">
+                      Total include taxes and fees
+                    </li>
+                  )}
                 </ul>
                 <ul
                   className={`flex flex-row flex-wrap gap-1 absolute bottom-2 left-2 ${adventureType === "explorer" ? "block" : "hidden"} `}
                 >
-                  <li className="square-venue-label w-fit">Fast Wi-Fi</li>
-                  <li className="square-venue-label w-fit">Pool</li>
-                  <li className="square-venue-label w-fit">
-                    Breakfast included
-                  </li>
+                  {post.meta.wifi && (
+                    <li className="square-venue-label w-fit">Free Wi-Fi</li>
+                  )}
+                  {post.meta.parking && (
+                    <li className="square-venue-label w-fit">Pool</li>
+                  )}
+                  {post.meta.breakfast && (
+                    <li className="square-venue-label w-fit">
+                      Breakfast included
+                    </li>
+                  )}
+                  {post.meta.pets && (
+                    <li className="square-venue-label w-fit">Pets allowed</li>
+                  )}
                 </ul>
               </>
             )}
@@ -85,15 +83,27 @@ function VenueSquareListing() {
           <div className="font-sans bg-hdYellow p-2 flex flex-col gap-2 rounded-b-xs">
             <div>
               <h3 className="font-sans font-bold leading-5">
-                Clarion Hotel The Hub
+                {post.name.length > 20
+                  ? `${post.name.slice(0, 20)}...`
+                  : post.name}
               </h3>
-              <p>Milan, Italy</p>
+              <p>
+                {post.location.city}, {post.location.country}
+              </p>
             </div>
             <div className="flex flex-row items-center gap-2 text-sm">
-              <p className="font-bold">4.77</p>
+              <p className="font-bold">
+                {post.rating}
+                <StarIcon
+                  size={12}
+                  weight="fill"
+                  className="inline-block mb-0.5 ml-0.5 text-hdOrange"
+                />
+              </p>
               <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
               <p>
-                <span className="font-bold">£500</span> for 4 nights
+                <span className="font-bold">£{post.price * 4}</span> for 4
+                nights
               </p>
             </div>
           </div>
