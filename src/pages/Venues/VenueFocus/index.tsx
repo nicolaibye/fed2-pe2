@@ -12,25 +12,69 @@ import { useState } from "react";
 import VenueReview from "../../../comp/VenueReview";
 import VenueLandscapeListing from "../../../comp/VenueLandscapeListing";
 import MobileReserveBar from "../../../comp/MobileReserveBar";
+import { useApi } from "../../../hook/useApi/index.tsx";
+import type { Venue } from "../../../types/venue.ts";
+// import type { User } from "../../../types/profile.ts";
+import { useParams, useNavigate } from "react-router-dom";
+import { copyUrlDesktop, copyUrlMobile } from "../../../js/helper/copyUrl.tsx";
+import LoadingComp from "../../../comp/LoadingComp/index.tsx";
+import ErrorComp from "../../../comp/ErrorComp/index.tsx";
+
+const url = "https://v2.api.noroff.dev/holidaze/venues";
 
 function VenueFocus() {
   const [hearted, setHearted] = useState(false);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const {
+    data: post,
+    isLoading,
+    isError,
+  } = useApi<Venue>(url + `/${id}?_owner=true`);
+
+  console.log(post);
+
+  // const { data: user } = useApi<User>(
+  //   `https://v2.api.noroff.dev/holidaze/profiles/${post?.owner.name}`,
+  //   {
+  //     headers: {
+  //       Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibmljb2xhaWJ5ZSIsImVtYWlsIjoibmljYnllMDIyMTdAc3R1ZC5ub3JvZmYubm8iLCJpYXQiOjE3MzE2NjE2OTJ9.tI3y1megWaJpdO8umQV1IcS3Udizl3Lh6kEsimXv6m0`,
+  //       "X-Noroff-API-Key": import.meta.env.VITE_API_TOKEN,
+  //     },
+  //   }
+  // );
+  // console.log(user);
+
+  if (isLoading) {
+    return <LoadingComp />;
+  }
+
+  if (isError) {
+    return <ErrorComp />;
+  }
+
   return (
     <>
       <section className="relative h-auto aspect-square md:aspect-auto md:h-[50vh] -mx-5 -mt-5 md:-mx-10 md:-mt-10">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR3p565lkyXBLlkNemqfGmUAWtVxN5XT6cQg&s"
-          alt=""
+          src={post?.media[0].url}
+          alt={post?.media[0].alt}
           className="h-full w-full object-cover"
         />
         <div className="absolute w-full h-full top-0 p-3 flex flex-row justify-between items-start left-1/2 -translate-x-1/2 lg:max-w-5xl">
-          <button className="circle-button">
+          <button className="circle-button" onClick={() => navigate(-1)}>
             <CaretLeftIcon weight="bold" size={20} />
           </button>
           <div className="flex flex-col items-end justify-between h-full">
             <div className="flex flex-row gap-2 md:opacity-0">
-              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-hdYellow text-hdBlack">
+              <button
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-hdYellow text-hdBlack relative"
+                onClick={copyUrlMobile}
+              >
                 <ArrowSquareOutIcon weight="bold" />
+                <span className="absolute square-venue-label bg-hdWhite right-9 bottom-0.5 opacity-0 w-24 pointer-events-none transition-all duration-300 copy-message-mobile">
+                  Copied link
+                </span>
               </button>
               <button className="w-8 h-8 flex items-center justify-center rounded-full bg-hdYellow text-hdBlack">
                 <HeartStraightIcon
@@ -40,7 +84,7 @@ function VenueFocus() {
               </button>
             </div>
             <p className="bg-hdBlack/75 text-hdWhite text-sm px-2.5 py-1 rounded-full">
-              1 / 24
+              1 / {post?.media.length}
             </p>
           </div>
         </div>
@@ -50,11 +94,17 @@ function VenueFocus() {
           <div className="mt-5 flex flex-col gap-2">
             <div className="md:flex md:flex-row md:items-center md:gap-4 lg:justify-between">
               <h1 className="text-2xl font-serif font-bold leading-5.5">
-                Clarion Hotel The Hub
+                {post?.name}
               </h1>
               <div className="hidden md:flex flex-row gap-2">
-                <button className="w-8 h-8 flex items-center justify-center rounded-full bg-hdYellow text-hdBlack">
+                <button
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-hdYellow text-hdBlack relative"
+                  onClick={copyUrlDesktop}
+                >
                   <ArrowSquareOutIcon weight="bold" />
+                  <span className="absolute square-venue-label bg-hdWhite bottom-9 opacity-0 w-22 pointer-events-none transition-all duration-300 copy-message">
+                    Copied link
+                  </span>
                 </button>
                 <button className="w-8 h-8 flex items-center justify-center rounded-full bg-hdYellow text-hdBlack">
                   <HeartStraightIcon
@@ -65,25 +115,33 @@ function VenueFocus() {
               </div>
             </div>
             <div className="flex flex-row items-center gap-2 text-base">
-              <p>Milan, Italy</p>
+              <p>
+                {post?.location.city}, {post?.location.country}
+              </p>
               <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
-              <p>1 bedroom</p>
-              <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
-              <p>1 bed</p>
+              <p>Max guests: {post?.maxGuests}</p>
             </div>
             <ul className="flex flex-row flex-wrap gap-1">
-              <li className="square-venue-label">Breakfast included</li>
-              <li className="square-venue-label">Fast Wi-Fi</li>
-              <li className="square-venue-label">Pool</li>
-              <li className="square-venue-label">Reserve now, pay later</li>
+              {post?.meta.breakfast && (
+                <li className="square-venue-label">Breakfast included</li>
+              )}
+              {post?.meta.wifi && (
+                <li className="square-venue-label">Fast Wi-Fi</li>
+              )}
+              {post?.meta.parking && (
+                <li className="square-venue-label">Parking</li>
+              )}
+              {post?.meta.pets && (
+                <li className="square-venue-label">Pets allowed</li>
+              )}
             </ul>
           </div>
           <section className="mt-5 flex flex-col gap-2">
             <h2 className="second-heading">Rating</h2>
             <div className="flex flex-row items-center gap-2 text-base">
-              <p className="font-bold">4.77</p>
+              <p className="font-bold">{post?.rating.toFixed(1)}</p>
               <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
-              <p>200 reviews</p>
+              <p>{post?._count.bookings} reviews</p>
             </div>
           </section>
           <section className="mt-5 flex flex-col gap-2">
@@ -123,22 +181,15 @@ function VenueFocus() {
           </section>
           <section className="mt-5 flex flex-col gap-2">
             <h2 className="second-heading">About</h2>
-            <p className="leading-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              ultrices ligula ac quam viverra porttitor. Phasellus libero magna,
-              imperdiet a scelerisque in, mollis ac diam. Nulla at dolor
-              tincidunt, pharetra mauris sit amet, malesuada orci. Morbi
-              placerat metus neque, non sagittis turpis interdum at. Quisque
-              suscipit id odio ac dictum.
-            </p>
+            <p className="leading-4">{post?.description}</p>
             <div className="flex flex-row items-center gap-2 mt-2">
               <img
-                src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg"
-                alt=""
+                src={post?.owner.avatar.url}
+                alt={post?.owner.avatar.alt}
                 className="aspect-square w-10 object-cover object-top rounded-sm border-2 border-hdRed"
               />
               <div className="flex flex-col gap-1.5">
-                <h3 className="font-bold leading-3">John Lennon</h3>
+                <h3 className="font-bold leading-3">{post?.owner.name}</h3>
                 <div className="flex flex-row items-center gap-2 text-base leading-3">
                   <p>5 Venues</p>
                   <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
@@ -171,17 +222,11 @@ function VenueFocus() {
             <h2 className="second-heading">Reviews</h2>
             <ul className="flex flex-row lg:flex-col overflow-x-scroll lg:overflow-x-auto overflow-y-hidden gap-4">
               <VenueReview />
-              <VenueReview />
-              <VenueReview />
-              <VenueReview />
             </ul>
           </section>
           <section className="mt-5 flex flex-col gap-2">
             <h2 className="second-heading">Similar Venues</h2>
             <ul className="flex flex-row gap-2 overflow-x-scroll rounded-xs">
-              <VenueLandscapeListing />
-              <VenueLandscapeListing />
-              <VenueLandscapeListing />
               <VenueLandscapeListing />
             </ul>
           </section>

@@ -1,5 +1,12 @@
 import { ArrowsOutSimpleIcon, ArrowsInSimpleIcon } from "@phosphor-icons/react";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useApi } from "../../hook/useApi/index.tsx";
+import type { Venue } from "../../types/venue.ts";
+import LoadingComp from "../LoadingComp/index.tsx";
+import ErrorComp from "../ErrorComp/index.tsx";
+
+const url = "https://v2.api.noroff.dev/holidaze/venues";
 
 function GoogleMapsVenue() {
   const [expanded, setExpanded] = useState(false);
@@ -15,13 +22,41 @@ function GoogleMapsVenue() {
       setExpanded(false);
     }
   };
+  const { id } = useParams();
+  const { data: post, isLoading, isError } = useApi<Venue>(url + `/${id}`);
+  const locationData = post?.location;
+  console.log(locationData);
+
+  const { address, city, zip, country, lat, lng } = locationData || {};
+  const hasCoords =
+    typeof lat === "number" &&
+    typeof lng === "number" &&
+    !isNaN(lat) &&
+    !isNaN(lng) &&
+    lat !== 0 &&
+    lng !== 0;
+  const addressString = [address, city, zip, country].filter(
+    (p) => p && p.length > 0
+  );
+  const googleUrl = hasCoords
+    ? `https://maps.google.com/maps?q=${locationData?.lat},${locationData?.lng}&z=15&output=embed`
+    : `https://maps.google.com/maps?q=${encodeURIComponent(addressString.join(", "))}&z=15&output=embed`;
+
+  if (isLoading) {
+    return <LoadingComp />;
+  }
+
+  if (isError) {
+    return <ErrorComp />;
+  }
+
   return (
     <div
       id="venueMap"
       className="w-full rounded-xs relative aspect-video transition-all duration-300"
     >
       <iframe
-        src="https://maps.google.com/maps?q=59.9139,10.7522&z=15&output=embed"
+        src={googleUrl}
         frameborder="0"
         width="100%"
         height="100%"

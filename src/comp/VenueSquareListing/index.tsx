@@ -5,24 +5,25 @@ import type { Venue } from "../../types/venue.ts";
 import { addExtraLabels } from "../../js/helper/addExtraLabels.tsx";
 import { StarIcon } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
+import ErrorComp from "../ErrorComp/index.tsx";
+import LoadingComp from "../LoadingComp/index.tsx";
 
 const url = "https://v2.api.noroff.dev/holidaze/venues";
 
 function VenueSquareListing() {
   const { adventureType } = useAdventureContext();
   const { data: posts, isLoading, isError } = useApi<Venue>(url);
-  const errorMessage = "Please try again later.";
   const venues = useMemo(() => {
     if (!posts) return null;
     return addExtraLabels(posts);
   }, [posts]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingComp />;
   }
 
   if (isError) {
-    return <div>Error loading data. {errorMessage}</div>;
+    return <ErrorComp />;
   }
 
   return (

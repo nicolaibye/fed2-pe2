@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function useApi<T>(url: string) {
+export function useApi<T>(url: string, options?: RequestInit) {
   const [data, setData] = useState<T[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -10,13 +10,14 @@ export function useApi<T>(url: string) {
       try {
         setIsLoading(true);
         setIsError(false);
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          ...options,
+        });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const result = await response.json();
         setData(result.data);
-        console.log(result);
       } catch (error) {
         console.error(error);
         setIsError(true);
@@ -26,6 +27,6 @@ export function useApi<T>(url: string) {
     }
 
     fetchData();
-  }, [url]);
+  }, [url, options]);
   return { data, isLoading, isError };
 }

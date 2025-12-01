@@ -8,8 +8,9 @@ export interface VenueWithExtras extends Venue {
   };
 }
 
-export function addExtraLabels(venues: Venue[]): VenueWithExtras[] {
-  return venues.map((venue) => ({
+export function addExtraLabels(venues: Venue | Venue[]): VenueWithExtras[] {
+  const list = Array.isArray(venues) ? venues : [venues];
+  return list.map((venue) => ({
     ...venue,
     policies: {
       freeCancellation: randomBool(0.75),
