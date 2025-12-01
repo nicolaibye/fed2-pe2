@@ -4,6 +4,7 @@ import { useApi } from "../../hook/useApi";
 import type { Venue } from "../../types/venue.ts";
 import { addExtraLabels } from "../../js/helper/addExtraLabels.tsx";
 import { StarIcon } from "@phosphor-icons/react";
+import { Link } from "react-router-dom";
 
 const url = "https://v2.api.noroff.dev/holidaze/venues";
 
@@ -29,8 +30,9 @@ function VenueSquareListing() {
       {venues?.map((post) => (
         <li
           key={post.id}
-          className={`w-full shrink-0 h-auto aspect-square flex flex-col`}
+          className={`w-full shrink-0 h-auto aspect-square flex flex-col relative`}
         >
+          <Link to={`/venue/${post.id}`} className="absolute inset-0 z-10" />
           <div className="flex-1 relative h-full w-full overflow-hidden">
             <img
               src={post.media[0].url}

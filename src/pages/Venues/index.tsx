@@ -26,9 +26,6 @@ function Venues() {
           <h2 className="text-2xl font-serif font-bold mb-2">Top Venues</h2>
           <ul className="flex flex-row gap-2 overflow-x-scroll rounded-xs">
             <VenueLandscapeListing />
-            <VenueLandscapeListing />
-            <VenueLandscapeListing />
-            <VenueLandscapeListing />
           </ul>
         </div>
         <div>
