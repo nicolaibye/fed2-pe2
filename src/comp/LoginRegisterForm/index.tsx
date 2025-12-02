@@ -29,7 +29,6 @@ function LoginRegisterForm() {
       ...prevBody,
       [name]: value,
     }));
-    console.log(bodyReg);
   }
 
   function buildRegisterPayload() {
@@ -85,7 +84,6 @@ function LoginRegisterForm() {
         throw new Error("Login failed");
       }
       const data = await response.json();
-      console.log(data);
       localStorage.setItem("token", data.data.accessToken);
       localStorage.setItem("user", JSON.stringify(data.data.name));
       window.location.href = "/";

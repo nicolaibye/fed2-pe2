@@ -50,7 +50,6 @@ function Account() {
       : "",
     userToFetch ? userFetchOptions : undefined
   );
-  console.log(user);
 
   if (isLoading) {
     return <LoadingComp />;
