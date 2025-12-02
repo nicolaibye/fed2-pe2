@@ -8,13 +8,13 @@ import {
 } from "@phosphor-icons/react";
 import GoogleMapsVenue from "../../../comp/GoogleMapsVenue";
 import DatePicker from "../../../comp/DatePicker";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import VenueReview from "../../../comp/VenueReview";
 import VenueLandscapeListing from "../../../comp/VenueLandscapeListing";
 import MobileReserveBar from "../../../comp/MobileReserveBar";
 import { useApi } from "../../../hook/useApi/index.tsx";
 import type { Venue } from "../../../types/venue.ts";
-// import type { User } from "../../../types/profile.ts";
+import type { User } from "../../../types/profile.ts";
 import { useParams, useNavigate } from "react-router-dom";
 import { copyUrlDesktop, copyUrlMobile } from "../../../js/helper/copyUrl.tsx";
 import LoadingComp from "../../../comp/LoadingComp/index.tsx";
@@ -32,18 +32,25 @@ function VenueFocus() {
     isError,
   } = useApi<Venue>(url + `/${id}?_owner=true`);
 
-  console.log(post);
+  const token = localStorage.getItem("token");
 
-  // const { data: user } = useApi<User>(
-  //   `https://v2.api.noroff.dev/holidaze/profiles/${post?.owner.name}`,
-  //   {
-  //     headers: {
-  //       Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibmljb2xhaWJ5ZSIsImVtYWlsIjoibmljYnllMDIyMTdAc3R1ZC5ub3JvZmYubm8iLCJpYXQiOjE3MzE2NjE2OTJ9.tI3y1megWaJpdO8umQV1IcS3Udizl3Lh6kEsimXv6m0`,
-  //       "X-Noroff-API-Key": import.meta.env.VITE_API_TOKEN,
-  //     },
-  //   }
-  // );
-  // console.log(user);
+  const userFetchOptions = useMemo(
+    () => ({
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "X-Noroff-API-Key": import.meta.env.VITE_API_TOKEN,
+      },
+    }),
+    [token]
+  );
+  const { data: user } = useApi<User>(
+    post
+      ? `https://v2.api.noroff.dev/holidaze/profiles/${post.owner.name}`
+      : "",
+    post ? userFetchOptions : undefined
+  );
 
   if (isLoading) {
     return <LoadingComp />;
@@ -190,11 +197,13 @@ function VenueFocus() {
               />
               <div className="flex flex-col gap-1.5">
                 <h3 className="font-bold leading-3">{post?.owner.name}</h3>
-                <div className="flex flex-row items-center gap-2 text-base leading-3">
-                  <p>5 Venues</p>
-                  <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
-                  <p>4.34 rating</p>
-                </div>
+                {user && (
+                  <div className="flex flex-row items-center gap-2 text-base leading-3">
+                    <p>{user._count.venues} Venues</p>
+                    <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
+                    <p>{user._count.bookings} Bookings</p>
+                  </div>
+                )}
               </div>
             </div>
           </section>

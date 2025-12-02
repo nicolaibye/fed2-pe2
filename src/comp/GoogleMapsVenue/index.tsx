@@ -25,7 +25,6 @@ function GoogleMapsVenue() {
   const { id } = useParams();
   const { data: post, isLoading, isError } = useApi<Venue>(url + `/${id}`);
   const locationData = post?.location;
-  console.log(locationData);
 
   const { address, city, zip, country, lat, lng } = locationData || {};
   const hasCoords =

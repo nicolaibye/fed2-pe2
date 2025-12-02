@@ -4,6 +4,10 @@ import UpcomingTrip from "../../comp/UpcomingTrip";
 import YourVenueCard from "../../comp/YourVenueCard";
 
 function Account() {
+  function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  }
   return (
     <>
       <h1 className="sr-only">Username's account page</h1>
@@ -104,7 +108,10 @@ function Account() {
           );
         })}
       </ul>
-      <button className="my-10 w-full text-center text-hdRed underline font-serif font-bold text-lg">
+      <button
+        className="my-10 w-full text-center text-hdRed underline font-serif font-bold text-lg"
+        onClick={logout}
+      >
         Log out
       </button>
       <hr className="mb-5 text-hdWhiteAccent" />
