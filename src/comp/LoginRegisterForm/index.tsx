@@ -87,6 +87,7 @@ function LoginRegisterForm() {
       const data = await response.json();
       console.log(data);
       localStorage.setItem("token", data.data.accessToken);
+      localStorage.setItem("user", JSON.stringify(data.data.name));
       window.location.href = "/";
     } catch (error) {
       console.error(error);

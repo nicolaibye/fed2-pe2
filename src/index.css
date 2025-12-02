@@ -23,6 +23,10 @@ body {
   @apply bg-hdWhite text-hdBlack transition-colors duration-500;
 }
 
+button {
+  @apply cursor-pointer;
+}
+
 .input-field {
   @apply p-2 text-hdBlack cursor-pointer bg-hdWhite text-base;
 }

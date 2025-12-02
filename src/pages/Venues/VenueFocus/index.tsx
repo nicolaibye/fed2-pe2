@@ -19,6 +19,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { copyUrlDesktop, copyUrlMobile } from "../../../js/helper/copyUrl.tsx";
 import LoadingComp from "../../../comp/LoadingComp/index.tsx";
 import ErrorComp from "../../../comp/ErrorComp/index.tsx";
+import { Link } from "react-router-dom";
 
 const url = "https://v2.api.noroff.dev/holidaze/venues";
 
@@ -69,7 +70,10 @@ function VenueFocus() {
           className="h-full w-full object-cover"
         />
         <div className="absolute w-full h-full top-0 p-3 flex flex-row justify-between items-start left-1/2 -translate-x-1/2 lg:max-w-5xl">
-          <button className="circle-button" onClick={() => navigate(-1)}>
+          <button
+            className="circle-button cursor-pointer"
+            onClick={() => navigate(-1)}
+          >
             <CaretLeftIcon weight="bold" size={20} />
           </button>
           <div className="flex flex-col items-end justify-between h-full">
@@ -195,7 +199,11 @@ function VenueFocus() {
                 alt={post?.owner.avatar.alt}
                 className="aspect-square w-10 object-cover object-top rounded-sm border-2 border-hdRed"
               />
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-1.5 relative">
+                <Link
+                  to={`/account/${post?.owner.name}`}
+                  className="absolute inset-0 z-10"
+                />
                 <h3 className="font-bold leading-3">{post?.owner.name}</h3>
                 {user && (
                   <div className="flex flex-row items-center gap-2 text-base leading-3">
