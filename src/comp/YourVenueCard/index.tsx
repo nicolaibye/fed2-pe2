@@ -33,6 +33,27 @@ function YourVenueCard() {
   );
   const venues = data || [];
 
+  function handleDelete(venueId: string) {
+    fetch(`https://v2.api.noroff.dev/holidaze/venues/${venueId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "X-Noroff-API-Key": import.meta.env.VITE_API_TOKEN,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          window.location.reload();
+        } else {
+          throw new Error("Failed to delete venue");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   if (isLoading) {
     return <LoadingComp />;
   }
@@ -72,7 +93,10 @@ function YourVenueCard() {
                 <button className="aspect-square bg-hdOrange w-10 h-auto flex items-center justify-center text-hdWhite">
                   <GearIcon weight="regular" size={22} />
                 </button>
-                <button className="aspect-square bg-hdRed w-10 h-auto flex items-center justify-center text-hdWhite">
+                <button
+                  className="aspect-square bg-hdRed w-10 h-auto flex items-center justify-center text-hdWhite"
+                  onClick={handleDelete.bind(null, trip.id)}
+                >
                   <TrashIcon weight="regular" size={22} />
                 </button>
               </div>
