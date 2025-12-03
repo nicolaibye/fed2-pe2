@@ -12,6 +12,7 @@ import ErrorComp from "../../comp/ErrorComp";
 function Account() {
   function logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     window.location.href = "/";
   }
   const token = localStorage.getItem("token");
@@ -40,6 +41,7 @@ function Account() {
     }),
     [token]
   );
+
   const {
     data: user,
     isLoading,
@@ -108,7 +110,9 @@ function Account() {
       <section
         className={`${!auth ? "mt-25" : "mt-5"} flex flex-col gap-2 max-w-3xl mx-auto`}
       >
-        <h2 className="second-heading">Your venues</h2>
+        <h2 className="second-heading">
+          {auth ? "Your" : `${user?.name}'s`} venues
+        </h2>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <YourVenueCard />
         </ul>
