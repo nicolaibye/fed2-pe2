@@ -16,8 +16,6 @@ const AdventureContext = createContext<AdventureContextInterface>({
 export const AdventureProvider = ({ children }: { children: ReactNode }) => {
   const [adventureType, setAdventureType] = useState<AdventureType>(null);
 
-  console.log(adventureType);
-
   return (
     <AdventureContext.Provider value={{ adventureType, setAdventureType }}>
       {children}

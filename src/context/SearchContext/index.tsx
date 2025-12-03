@@ -13,7 +13,6 @@ const SearchContext = createContext<SearchContextType>({
 
 export const SearchProvider = ({ children }: { children: ReactNode }) => {
   const [isSummary, setIsSummary] = useState(false);
-  console.log(isSummary);
 
   return (
     <SearchContext.Provider value={{ isSummary, setIsSummary }}>

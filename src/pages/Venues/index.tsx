@@ -26,17 +26,11 @@ function Venues() {
           <h2 className="text-2xl font-serif font-bold mb-2">Top Venues</h2>
           <ul className="flex flex-row gap-2 overflow-x-scroll rounded-xs">
             <VenueLandscapeListing />
-            <VenueLandscapeListing />
-            <VenueLandscapeListing />
-            <VenueLandscapeListing />
           </ul>
         </div>
         <div>
           <h3 className="text-2xl font-serif font-bold mb-2">All Listings</h3>
-          <ul className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 rounded-xs">
-            <VenueSquareListing />
-            <VenueSquareListing />
-            <VenueSquareListing />
+          <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 rounded-xs">
             <VenueSquareListing />
           </ul>
         </div>

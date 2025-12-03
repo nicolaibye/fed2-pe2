@@ -16,6 +16,7 @@ function App() {
           <Route path="venue" element={<Venues />} />
           <Route path="venue/:id" element={<VenueFocus />} />
           <Route path="account" element={<Account />} />
+          <Route path="account/:username" element={<Account />} />
           <Route path="login" element={<LoginReg />} />
           <Route path="*" element={<Error />} />
         </Route>
