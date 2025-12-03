@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 export function useApi<T>(url: string, options?: RequestInit) {
-  const [data, setData] = useState<T[] | null>(null);
+  const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 

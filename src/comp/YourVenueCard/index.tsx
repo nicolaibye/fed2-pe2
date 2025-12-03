@@ -4,7 +4,7 @@ import { useApi } from "../../hook/useApi";
 import type { Venue } from "../../types/venue.ts";
 import LoadingComp from "../../comp/LoadingComp";
 import ErrorComp from "../../comp/ErrorComp";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function YourVenueCard() {
   const loggedInUser = localStorage.getItem("user")?.replace(/"/g, "");
@@ -55,8 +55,12 @@ function YourVenueCard() {
                 className={`object-cover rounded-t-xs aspect-square h-20`}
               />
               <div
-                className={`font-sans w-full bg-hdYellow p-2 flex flex-col justify-center rounded-b-xs`}
+                className={`font-sans w-full bg-hdYellow p-2 flex flex-col justify-center rounded-b-xs relative cursor-pointer`}
               >
+                <Link
+                  to={`/venue/${trip.id}`}
+                  className="absolute inset-0 z-10"
+                />
                 <h3 className="font-sans font-bold leading-5">{trip.name}</h3>
                 <div className="flex flex-row flex-wrap items-center text-xs">
                   <p>

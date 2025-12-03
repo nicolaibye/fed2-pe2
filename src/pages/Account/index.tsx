@@ -1,13 +1,20 @@
-import { GavelIcon, GearIcon, InfoIcon, StarIcon } from "@phosphor-icons/react";
+import {
+  GavelIcon,
+  GearIcon,
+  InfoIcon,
+  MapPinPlusIcon,
+  StarIcon,
+} from "@phosphor-icons/react";
 import PreviousTripsCard from "../../comp/PreviousTripsCard";
 import UpcomingTrip from "../../comp/UpcomingTrip";
 import YourVenueCard from "../../comp/YourVenueCard";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useMemo } from "react";
 import { useApi } from "../../hook/useApi";
 import type { User } from "../../types/profile.ts";
 import LoadingComp from "../../comp/LoadingComp";
 import ErrorComp from "../../comp/ErrorComp";
+import EditOverlay from "../../comp/EditOverlay/index.tsx";
 
 function Account() {
   function logout() {
@@ -15,6 +22,7 @@ function Account() {
     localStorage.removeItem("user");
     window.location.href = "/";
   }
+  const [searchParams, setSearchParams] = useSearchParams();
   const token = localStorage.getItem("token");
   const loggedInUser = localStorage.getItem("user")?.replace(/"/g, "");
   const urlPath = window.location.pathname;
@@ -53,6 +61,28 @@ function Account() {
     userToFetch ? userFetchOptions : undefined
   );
 
+  const userSettings = () => {
+    const overlay = document.getElementById("edit-overlay");
+    if (overlay) {
+      overlay.classList.toggle("hidden");
+      overlay.classList.toggle("flex");
+      document.body.classList.toggle("overflow-hidden");
+      searchParams.set("settings", "true");
+      setSearchParams(searchParams);
+    }
+  };
+
+  const addVenue = () => {
+    const overlay = document.getElementById("edit-overlay");
+    if (overlay) {
+      overlay.classList.toggle("hidden");
+      overlay.classList.toggle("flex");
+      document.body.classList.toggle("overflow-hidden");
+      searchParams.set("newVenue", "true");
+      setSearchParams(searchParams);
+    }
+  };
+
   if (isLoading) {
     return <LoadingComp />;
   }
@@ -63,6 +93,7 @@ function Account() {
 
   return (
     <>
+      <EditOverlay />
       <h1 className="sr-only">Username's account page</h1>
       <div className="relative h-38 -mx-5 -mt-5 md:-mx-10 md:-mt-10 bg-hdRed">
         <div className="absolute inset-1 bg-[url(/SwirlPattern.svg)] w-full h-full top-0 left-0 bg-repeat">
@@ -123,24 +154,37 @@ function Account() {
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 outline-shadow-red max-w-3xl mx-auto">
             {[
               {
+                id: "account-link-1",
+                heading: "New venue",
+                text: "List your venue on Holidaze",
+                icon: <MapPinPlusIcon size={22} />,
+                function: true,
+                clickFunction: addVenue,
+              },
+              {
+                id: "account-link-2",
                 heading: "Reviews",
                 text: "Check your previous reviews",
                 icon: <StarIcon size={22} />,
                 function: false,
               },
               {
+                id: "account-link-3",
                 heading: "Settings",
                 text: "Update your profile",
                 icon: <GearIcon size={22} />,
                 function: true,
+                clickFunction: userSettings,
               },
               {
+                id: "account-link-4",
                 heading: "Legal",
                 text: "Our terms and privacy policies",
                 icon: <GavelIcon size={22} />,
                 function: false,
               },
               {
+                id: "account-link-5",
                 heading: "Help and feedback",
                 text: "We are here to help",
                 icon: <InfoIcon size={22} />,
@@ -148,8 +192,11 @@ function Account() {
               },
             ].map((link) => {
               return link.function ? (
-                <li>
-                  <button className="w-full flex flex-row items-center gap-2 cut-corner bg-hdWhite p-3">
+                <li key={link.id}>
+                  <button
+                    className="w-full flex flex-row items-center gap-2 cut-corner bg-hdWhite p-3"
+                    onClick={link.clickFunction}
+                  >
                     {link.icon}
                     <div className="flex flex-col gap-1 text-start">
                       <h3 className="font-sans font-bold leading-3">
@@ -160,7 +207,10 @@ function Account() {
                   </button>
                 </li>
               ) : (
-                <li className="w-full flex flex-row items-center gap-2 cut-corner bg-hdWhite p-3">
+                <li
+                  className="w-full flex flex-row items-center gap-2 cut-corner bg-hdWhite p-3"
+                  key={link.id}
+                >
                   {link.icon}
                   <div className="flex flex-col gap-1">
                     <h3 className="font-sans font-bold leading-3">
