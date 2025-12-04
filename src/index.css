@@ -93,6 +93,10 @@ button {
   @apply bg-hdOrange;
 }
 
+.circle-button.create {
+  @apply bg-hdYellow;
+}
+
 .filter {
   @apply hidden;
 }

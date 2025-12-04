@@ -1,6 +1,5 @@
-export interface ApiResponse {
-  data: Venue[];
-  meta: Record<string, unknown>;
+export interface ApiResponse<T> {
+  data: T;
 }
 
 export interface Venue {
