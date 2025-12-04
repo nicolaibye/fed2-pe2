@@ -26,8 +26,13 @@ const url = "https://v2.api.noroff.dev/holidaze/venues";
 
 function VenueFocus() {
   const [hearted, setHearted] = useState(false);
-  const { numberOfDays, numberOfGuests, setNumberOfGuests } =
-    useSearchContext();
+  const {
+    numberOfDays,
+    numberOfGuests,
+    setNumberOfGuests,
+    startDate,
+    endDate,
+  } = useSearchContext();
   const navigate = useNavigate();
   const { id } = useParams();
   const {
@@ -55,6 +60,41 @@ function VenueFocus() {
       : "",
     post ? userFetchOptions : undefined
   );
+
+  function buildBookingPayload() {
+    return {
+      dateFrom: startDate?.toISOString(),
+      dateTo: endDate?.toISOString(),
+      guests: Number(numberOfGuests),
+      venueId: id,
+    };
+  }
+
+  async function handleVenueSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const response = await fetch(
+        `https://v2.api.noroff.dev/holidaze/bookings`,
+        {
+          method: "post",
+          body: JSON.stringify(buildBookingPayload()),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "X-Noroff-API-Key": import.meta.env.VITE_API_TOKEN,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error();
+      }
+      if (response.ok) {
+        alert("Booking successful!");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   if (isLoading) {
     return <LoadingComp />;
@@ -240,6 +280,7 @@ function VenueFocus() {
                 <button
                   type="submit"
                   className={`text-xl font-extrabold font-serif w-full h-10 text-hdBlack bg-hdYellow cut-corner`}
+                  onClick={handleVenueSubmit}
                 >
                   Reserve
                 </button>
@@ -300,6 +341,7 @@ function VenueFocus() {
               <button
                 type="submit"
                 className={`text-xl font-extrabold font-serif w-full h-10 text-hdBlack bg-hdYellow cut-corner`}
+                onClick={handleVenueSubmit}
               >
                 Reserve
               </button>

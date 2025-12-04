@@ -5,7 +5,7 @@ import VenueLandscapeListing from "../../comp/VenueLandscapeListing";
 
 function Venues() {
   return (
-    <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-10 w-full">
+    <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-10 w-full lg:mx-auto lg:max-w-7xl">
       <section className="flex flex-col gap-7 overflow-x-scroll">
         <div>
           <input

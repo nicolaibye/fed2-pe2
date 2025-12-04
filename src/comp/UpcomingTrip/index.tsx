@@ -3,6 +3,7 @@ import { useApi } from "../../hook/useApi";
 import type { User } from "../../types/profile.ts";
 import LoadingComp from "../../comp/LoadingComp";
 import ErrorComp from "../../comp/ErrorComp";
+import { format } from "date-fns";
 
 function UpcomingTrip() {
   const loggedInUser = localStorage.getItem("user")?.replace(/"/g, "");
@@ -24,7 +25,7 @@ function UpcomingTrip() {
     isError,
   } = useApi<User>(
     loggedInUser
-      ? `https://v2.api.noroff.dev/holidaze/profiles/${loggedInUser}/bookings`
+      ? `https://v2.api.noroff.dev/holidaze/profiles/${loggedInUser}/bookings?_venue=true`
       : "",
     loggedInUser ? userFetchOptions : undefined
   );
@@ -39,31 +40,41 @@ function UpcomingTrip() {
 
   return (
     <>
-      {user && user.length > 0 ? (
-        user.map((booking) => (
-          <li
-            key={booking.id}
-            className={`w-full h-auto flex flex-col base-shadow`}
-          >
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR3p565lkyXBLlkNemqfGmUAWtVxN5XT6cQg&s"
-              alt=""
-              className={`object-cover rounded-t-xs aspect-5/2`}
-            />
-            <div
-              className={`font-sans flex-5 bg-hdYellow p-2 flex flex-col rounded-b-xs`}
+      {user ? (
+        user.map((booking) => {
+          const dates = [new Date(booking.dateFrom), new Date(booking.dateTo)];
+          const formattedDates = `${format(dates[0], "d")} - ${format(
+            dates[dates.length - 1],
+            "d MMM yyyy"
+          )}`;
+          return (
+            <li
+              key={booking.id}
+              className={`w-full h-auto flex flex-col base-shadow`}
             >
-              <h3 className="font-sans font-bold leading-5">
-                Clarion Hotel The Hub
-              </h3>
-              <div className="flex flex-row items-center gap-2 text-sm">
-                <p>Milan, Italy</p>
-                <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
-                <p>21-27 December 2025</p>
+              <img
+                src={booking.venue.media[0].url}
+                alt={booking.venue.media[0].alt}
+                className={`object-cover rounded-t-xs aspect-5/2`}
+              />
+              <div
+                className={`font-sans flex-5 bg-hdYellow p-2 flex flex-col rounded-b-xs`}
+              >
+                <h3 className="font-sans font-bold leading-5">
+                  {booking.venue.name}
+                </h3>
+                <div className="flex flex-row items-center gap-2 text-sm">
+                  <p>
+                    {booking.venue.location.city},{" "}
+                    {booking.venue.location.country}
+                  </p>
+                  <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
+                  <p>{formattedDates}</p>
+                </div>
               </div>
-            </div>
-          </li>
-        ))
+            </li>
+          );
+        })
       ) : (
         <p className="font-sans">You have no upcoming trips.</p>
       )}

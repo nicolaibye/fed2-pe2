@@ -46,7 +46,7 @@ function VenueLandscapeListing() {
           key={post.id}
           className={`w-[90%] max-w-90 shrink-0 h-52 rounded-sm flex ${adventureType === "affluent" ? "flex-col" : "flex-row"} relative`}
         >
-          <Link to={`/venue/${post.id}`} className="absolute inset-0 z-10" />
+          <Link to={`/venue/${post.id}`} className="absolute inset-0" />
           <img
             src={post.media[0].url}
             alt={post.media[0].alt}

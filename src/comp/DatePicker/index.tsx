@@ -8,7 +8,7 @@ import "../../styles/calenderStyleOverride.css";
 import { useSearchContext } from "../../context/SearchContext/useSearchContext";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../hook/useApi";
-import type { Booking } from "../../types/venue";
+import type { Venue } from "../../types/venue";
 
 function DatePicker() {
   const {
@@ -41,19 +41,19 @@ function DatePicker() {
     }),
     [token]
   );
-  const url = "https://v2.api.noroff.dev/holidaze/bookings?_venue=true";
+  const onVenuePage = Boolean(venueId);
+  const inputChecker = !onVenuePage && searchSummary;
+  const url = onVenuePage
+    ? `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`
+    : null;
   const {
-    data: bookings,
+    data: venueData,
     isLoading,
     isError,
-  } = useApi<Booking>(url, userFetchOptions);
-
-  const matchingVenueAndBooking = bookings?.filter(
-    (booking) => booking.venue.id === venueId
-  );
+  } = useApi<Venue>(url ?? "", userFetchOptions);
 
   function getDatesBetween(start: Date, end: Date) {
-    const dates: [] = [];
+    const dates: Date[] = [];
     const currentDate = new Date(start);
     while (currentDate <= end) {
       dates.push(new Date(currentDate));
@@ -63,21 +63,18 @@ function DatePicker() {
   }
 
   const disabledDates = useMemo(() => {
-    if (!matchingVenueAndBooking) return [];
+    if (!onVenuePage) return [];
+    const bookings = venueData?.bookings;
+    if (!bookings) return [];
     const allDates: Date[] = [];
-
-    matchingVenueAndBooking.forEach((booking) => {
-      const startDate = new Date(booking.dateFrom);
-      const endDate = new Date(booking.dateTo);
-      const dates = getDatesBetween(startDate, endDate);
-      allDates.push(...dates);
+    bookings.forEach((booking) => {
+      const start = new Date(booking.dateFrom);
+      const end = new Date(booking.dateTo);
+      allDates.push(...getDatesBetween(start, end));
     });
 
     return allDates;
-  }, [matchingVenueAndBooking]);
-
-  const onVenuePage = Boolean(venueId);
-  const inputChecker = !onVenuePage && searchSummary;
+  }, [venueData, onVenuePage]);
 
   function handleDateChange(item: OnChangeProps) {
     const selection = item.selection;
@@ -100,8 +97,6 @@ function DatePicker() {
     }
   }
 
-  console.log(disabledDates);
-
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
 
@@ -123,7 +118,7 @@ function DatePicker() {
       {open && (
         <DateRange
           onChange={handleDateChange}
-          disabledDates={disabledDates}
+          disabledDates={onVenuePage ? disabledDates : undefined}
           moveRangeOnFirstSelection={false}
           ranges={range}
           className="absolute z-50 w-full"

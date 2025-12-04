@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   CheckIcon,
   MinusIcon,
@@ -86,10 +86,6 @@ function NewVenue() {
       [name]: value,
     }));
   }
-
-  useEffect(() => {
-    console.log("Updated bodyReg:", bodyReg);
-  }, [bodyReg]);
 
   async function handleVenueSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
