@@ -9,17 +9,17 @@ function Venues() {
       <section className="flex flex-col gap-7 overflow-x-scroll">
         <div>
           <input
-            id="input"
-            className="w-full"
+            id="search-input"
+            className="w-full input-field cut-corner search mt-5 md:mt-0"
             type="search"
-            autocomplete="off"
-            spellcheck="false"
+            autoComplete="on"
+            spellCheck="false"
             role="combobox"
             aria-controls="matches"
             aria-live="polite"
             aria-expanded="false"
             aria-description=""
-            placeholder="Search Google or type a URL"
+            placeholder="Looking for anything specific?"
           ></input>
         </div>
         <div>

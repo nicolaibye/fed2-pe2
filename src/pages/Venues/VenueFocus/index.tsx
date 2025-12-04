@@ -20,11 +20,13 @@ import { copyUrlDesktop, copyUrlMobile } from "../../../js/helper/copyUrl.tsx";
 import LoadingComp from "../../../comp/LoadingComp/index.tsx";
 import ErrorComp from "../../../comp/ErrorComp/index.tsx";
 import { Link } from "react-router-dom";
+import { useSearchContext } from "../../../context/SearchContext/useSearchContext.ts";
 
 const url = "https://v2.api.noroff.dev/holidaze/venues";
 
 function VenueFocus() {
   const [hearted, setHearted] = useState(false);
+  const { numberOfGuests, setNumberOfGuests } = useSearchContext();
   const navigate = useNavigate();
   const { id } = useParams();
   const {
@@ -215,14 +217,16 @@ function VenueFocus() {
               </div>
             </div>
           </section>
-          <section className="my-12 flex flex-col mx-auto gap-2 max-w-80 lg:hidden">
+          <section className="my-12 flex flex-col mx-auto gap-2 max-w-80 lg:hidden z-0">
             <form className="flex flex-col gap-2">
-              <div className="grid grid-cols-2 gap-3 w-full relative base-shadow">
+              <div className="grid grid-cols-2 gap-3 w-full relative base-shadow z-50">
                 <DatePicker />
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Guests"
                   className={`input-field cut-corner`}
+                  onChange={(e) => setNumberOfGuests(e.target.value)}
+                  value={numberOfGuests}
                 />
               </div>
               <div className="base-shadow">
@@ -273,14 +277,16 @@ function VenueFocus() {
           </section>
           <MobileReserveBar />
         </div>
-        <section className="my-12 hidden flex-col mx-auto gap-2 max-w-80 lg:flex">
+        <section className="my-12 hidden flex-col mx-auto gap-2 max-w-80 lg:flex z-0">
           <form className="flex flex-col gap-2">
-            <div className="grid grid-cols-2 gap-3 w-full relative base-shadow">
+            <div className="grid grid-cols-2 gap-3 w-full relative base-shadow z-50">
               <DatePicker />
               <input
-                type="text"
+                type="number"
                 placeholder="Guests"
                 className={`input-field cut-corner`}
+                onChange={(e) => setNumberOfGuests(e.target.value)}
+                value={numberOfGuests}
               />
             </div>
             <div className="base-shadow">

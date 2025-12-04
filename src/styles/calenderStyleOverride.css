@@ -110,3 +110,10 @@
 .rdrDayInPreview {
   border-radius: 2px !important;
 }
+
+.rdrDateDisplayItem {
+  border-radius: 4px;
+  background-color: #f4ede9;
+  box-shadow: none;
+  border: 2px solid transparent;
+}

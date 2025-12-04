@@ -1,14 +1,22 @@
 import { useState } from "react";
-import { format } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 import { DateRange } from "react-date-range";
 import type { Range, OnChangeProps } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import "../../styles/calenderStyleOverride.css";
 import { useSearchContext } from "../../context/SearchContext/useSearchContext";
+import { matchPath } from "react-router-dom";
 
 function DatePicker() {
-  const { isSummary: searchSummary } = useSearchContext();
+  const {
+    isSummary: searchSummary,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    setNumberOfDays,
+  } = useSearchContext();
   const [open, setOpen] = useState(false);
   const [range, setRange] = useState<Range[]>([
     {
@@ -18,9 +26,33 @@ function DatePicker() {
     },
   ]);
 
+  const onVenuePage = matchPath("venue/:id", location.pathname) !== null;
+  const inputChecker = !onVenuePage && searchSummary;
+
+  function handleDateChange(item: OnChangeProps) {
+    const selection = item.selection;
+
+    setRange([selection]);
+
+    const newStartDate = selection.startDate;
+    const newEndDate = selection.endDate;
+
+    if (newStartDate) {
+      setStartDate(newStartDate);
+    }
+
+    if (newEndDate) {
+      setEndDate(newEndDate);
+    }
+
+    if (newStartDate && newEndDate) {
+      setNumberOfDays(differenceInDays(newEndDate, newStartDate));
+    }
+  }
+
   const formatted =
-    range[0].startDate && range[0].endDate
-      ? `${format(range[0].startDate, "MMM d")} - ${format(range[0].endDate, "MMM d")}`
+    startDate && endDate
+      ? `${format(startDate, "MMM d")} - ${format(endDate, "MMM d")}`
       : "Dates";
 
   return (
@@ -31,14 +63,14 @@ function DatePicker() {
         onClick={() => setOpen(!open)}
         value={formatted}
         placeholder="Dates"
-        className={`input-field ${searchSummary ? "hidden peer-checked:flex" : ""} cut-corner`}
+        className={`input-field ${inputChecker ? "hidden" : ""} cut-corner`}
       />
       {open && (
         <DateRange
-          onChange={(item: OnChangeProps) => setRange([item.selection])}
+          onChange={handleDateChange}
           moveRangeOnFirstSelection={false}
           ranges={range}
-          className="absolute top-16 z-50 w-full"
+          className="absolute z-50 w-full"
         />
       )}
     </>

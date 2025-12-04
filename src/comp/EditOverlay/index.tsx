@@ -15,9 +15,11 @@ function EditOverlay() {
       className="bg-hdRed w-full h-full fixed hidden top-0 left-0 justify-center z-1001 overflow-y-scroll mb-10"
     >
       <div className="absolute inset-1 bg-[url(/SwirlPattern.svg)] w-full h-full top-0 left-0 bg-repeat pointer-events-none"></div>
-      {settings ? <AccountSettings /> : null}
-      {newVenue ? <NewVenue /> : null}
-      {editVenue ? <EditVenue /> : null}
+      <div className="md:max-w-1/2">
+        {settings ? <AccountSettings /> : null}
+        {newVenue ? <NewVenue /> : null}
+        {editVenue ? <EditVenue /> : null}
+      </div>
     </div>
   );
 }

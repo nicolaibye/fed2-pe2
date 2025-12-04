@@ -13,12 +13,14 @@ import { StarIcon } from "@phosphor-icons/react";
 import ErrorComp from "../ErrorComp/index.tsx";
 import LoadingComp from "../LoadingComp/index.tsx";
 import { Link } from "react-router-dom";
+import { useSearchContext } from "../../context/SearchContext/useSearchContext";
 
 const url = "https://v2.api.noroff.dev/holidaze/venues";
 
 function VenueLandscapeListing() {
   const { adventureType } = useAdventureContext();
   const { data: posts, isLoading, isError } = useApi<Venue>(url);
+  const { numberOfDays } = useSearchContext();
   const errorMessage = "Please try again later.";
   const venues = useMemo(() => {
     if (!posts) return null;
@@ -75,7 +77,8 @@ function VenueLandscapeListing() {
                     </p>
                     <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
                     <p>
-                      <span className="font-bold">£500</span> for 4 nights
+                      <span className="font-bold">£500</span> for {numberOfDays}
+                      nights
                     </p>
                   </div>
                 </>
@@ -143,8 +146,10 @@ function VenueLandscapeListing() {
                       )}
                     </ul>
                     <p className="text-lg">
-                      <span className="font-bold">£{post.price * 4}</span> for 4
-                      nights
+                      <span className="font-bold">
+                        £{post.price * numberOfDays}
+                      </span>{" "}
+                      for {numberOfDays} nights
                     </p>
                   </div>
                 </>

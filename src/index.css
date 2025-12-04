@@ -31,13 +31,17 @@ button {
   @apply p-2 text-hdBlack cursor-pointer bg-hdWhite text-base;
 }
 
+.input-field.search {
+  @apply bg-hdWhiteAccent;
+}
+
 .radio-label {
   @apply flex-col items-center w-full text-hdWhite peer-checked:text-hdYellow overflow-hidden;
 }
 
 .radio-label svg,
 .radio-label span {
-  @apply cursor-pointer p-1 transition-colors duration-500;
+  @apply cursor-pointer p-1 transition-colors duration-300;
 }
 
 .radio-label span {
