@@ -28,7 +28,7 @@ function DestinationSection() {
     <div
       className={`${venuePage || homePage ? "flex" : "hidden"} flex-col w-full bg-hdRed text-hdWhite p-4 relative`}
     >
-      <div className="absolute inset-1 bg-[url(/SwirlPattern.svg)] w-full h-full top-0 left-0 bg-repeat"></div>
+      <div className="absolute inset-1 bg-[url(/SwirlPattern.svg)] w-full h-full top-0 left-0 bg-repeat z-0"></div>
       <form
         className={`flex flex-col ${searchSummary ? "" : "gap-3"} z-10 mx-auto`}
       >
@@ -355,7 +355,7 @@ function DestinationSection() {
             className={`input-field w-full ${searchSummary ? "hidden peer-checked:flex" : ""} cut-corner`}
           />
         </div>
-        <div className="grid grid-cols-2 gap-3 w-full relative base-shadow">
+        <div className="grid grid-cols-2 gap-3 w-full relative base-shadow z-11">
           <DatePicker />
           <input
             type="text"

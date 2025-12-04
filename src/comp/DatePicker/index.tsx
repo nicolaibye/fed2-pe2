@@ -4,6 +4,7 @@ import { DateRange } from "react-date-range";
 import type { Range, OnChangeProps } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import "../../styles/calenderStyleOverride.css";
 import { useSearchContext } from "../../context/SearchContext/useSearchContext";
 
 function DatePicker() {
@@ -19,7 +20,7 @@ function DatePicker() {
 
   const formatted =
     range[0].startDate && range[0].endDate
-      ? `${format(range[0].startDate, "MM/dd/yyyy")} - ${format(range[0].endDate, "MM/dd/yyyy")}`
+      ? `${format(range[0].startDate, "MMM d")} - ${format(range[0].endDate, "MMM d")}`
       : "Dates";
 
   return (
