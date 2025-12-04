@@ -6,10 +6,32 @@ import {
   StarIcon,
 } from "@phosphor-icons/react";
 import { useSearchParams } from "react-router-dom";
+import { useApi } from "../../../hook/useApi";
+import type { Venue } from "../../../types/venue.ts";
+import LoadingComp from "../../../comp/LoadingComp";
+import ErrorComp from "../../../comp/ErrorComp";
+import { useMemo } from "react";
 
-function CreateVenue() {
+function EditVenue() {
   const token = localStorage.getItem("token");
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const userFetchOptions = useMemo(
+    () => ({
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "X-Noroff-API-Key": import.meta.env.VITE_API_TOKEN,
+      },
+    }),
+    [token]
+  );
+
+  const { data, isLoading, isError } = useApi<Venue>(
+    `https://v2.api.noroff.dev/holidaze/venues/${searchParams.get("id")}`,
+    userFetchOptions
+  );
 
   const [bodyReg, setBodyReg] = useState({
     name: "",
@@ -30,6 +52,21 @@ function CreateVenue() {
       country: "",
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      setBodyReg({
+        name: data.name,
+        description: data.description,
+        media: data.media,
+        price: data.price,
+        maxGuests: data.maxGuests,
+        rating: data.rating,
+        meta: data.meta,
+        location: data.location,
+      });
+    }
+  }, [data]);
 
   function handleVenueChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -95,9 +132,9 @@ function CreateVenue() {
     event.preventDefault();
     try {
       const response = await fetch(
-        `https://v2.api.noroff.dev/holidaze/venues`,
+        `https://v2.api.noroff.dev/holidaze/venues/${searchParams.get("id")}`,
         {
-          method: "post",
+          method: "put",
           body: JSON.stringify(buildVenuePayload()),
           headers: {
             "Content-Type": "application/json",
@@ -115,7 +152,7 @@ function CreateVenue() {
           overlay.classList.toggle("hidden");
           overlay.classList.toggle("flex");
           document.body.classList.toggle("overflow-hidden");
-          searchParams.delete("newVenue");
+          searchParams.delete("editVenue");
           setSearchParams(searchParams);
         }
       }
@@ -131,7 +168,7 @@ function CreateVenue() {
       overlay.classList.toggle("hidden");
       overlay.classList.toggle("flex");
       document.body.classList.toggle("overflow-hidden");
-      searchParams.delete("newVenue");
+      searchParams.delete("editVenue");
       setSearchParams(searchParams);
     }
   }
@@ -165,13 +202,13 @@ function CreateVenue() {
     };
   }
 
-  //   if (isLoading) {
-  //     return <LoadingComp />;
-  //   }
+  if (isLoading) {
+    return <LoadingComp />;
+  }
 
-  //   if (isError) {
-  //     return <ErrorComp />;
-  //   }
+  if (isError) {
+    return <ErrorComp />;
+  }
 
   return (
     <form action="" className="flex flex-col w-full p-5 pb-10 gap-2">
@@ -185,6 +222,7 @@ function CreateVenue() {
           placeholder="Venue name"
           className="input-field w-full cut-corner"
           onChange={handleVenueChange}
+          value={bodyReg.name}
           required
         />
       </div>
@@ -194,6 +232,7 @@ function CreateVenue() {
           placeholder="Description"
           className="input-field w-full h-full cut-corner"
           onChange={handleVenueChange}
+          value={bodyReg.description}
           required
         />
       </div>
@@ -209,6 +248,7 @@ function CreateVenue() {
                 onChange={handleVenueChange}
                 required
                 data-index={index}
+                value={media.url}
               />
               <button
                 onClick={() => removeExtraMedia(index)}
@@ -236,6 +276,7 @@ function CreateVenue() {
             placeholder="Price per night"
             className="input-field w-full cut-corner"
             onChange={handleVenueChange}
+            value={bodyReg.price}
             required
           />
         </div>
@@ -246,6 +287,7 @@ function CreateVenue() {
             placeholder="Max guests"
             className="input-field w-full cut-corner"
             onChange={handleVenueChange}
+            value={bodyReg.maxGuests}
             required
           />
         </div>
@@ -315,6 +357,7 @@ function CreateVenue() {
             placeholder="Address"
             className="input-field w-full cut-corner"
             onChange={handleVenueChange}
+            value={bodyReg.location.address}
           />
         </div>
         <div className="base-shadow flex flex-col gap-1">
@@ -325,6 +368,7 @@ function CreateVenue() {
             placeholder="City"
             className="input-field w-full cut-corner"
             onChange={handleVenueChange}
+            value={bodyReg.location.city}
           />
         </div>
       </div>
@@ -336,6 +380,7 @@ function CreateVenue() {
           placeholder="Country"
           className="input-field w-full cut-corner"
           onChange={handleVenueChange}
+          value={bodyReg.location.country}
         />
       </div>
       <div className="base-shadow flex flex-row gap-3 z-0">
@@ -344,7 +389,7 @@ function CreateVenue() {
           className="text-xl font-extrabold font-serif w-full h-10 text-hdBlack bg-hdYellow cut-corner"
           onClick={handleVenueSubmit}
         >
-          Create
+          Update
         </button>
         <button
           className="text-xl font-extrabold font-serif w-full h-10 text-hdBlack bg-hdWhite cut-corner"
@@ -357,4 +402,4 @@ function CreateVenue() {
   );
 }
 
-export default CreateVenue;
+export default EditVenue;

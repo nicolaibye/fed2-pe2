@@ -127,7 +127,7 @@ function VenueFocus() {
             </div>
             <div className="flex flex-row items-center gap-2 text-base">
               <p>
-                {post?.location.city}, {post?.location.country}
+                {post?.location.address}, {post?.location.city}
               </p>
               <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
               <p>Max guests: {post?.maxGuests}</p>

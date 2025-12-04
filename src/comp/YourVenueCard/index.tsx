@@ -4,9 +4,10 @@ import { useApi } from "../../hook/useApi";
 import type { Venue } from "../../types/venue.ts";
 import LoadingComp from "../../comp/LoadingComp";
 import ErrorComp from "../../comp/ErrorComp";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
 function YourVenueCard() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const loggedInUser = localStorage.getItem("user")?.replace(/"/g, "");
   const token = localStorage.getItem("token");
   const urlPath = window.location.pathname;
@@ -54,6 +55,18 @@ function YourVenueCard() {
       });
   }
 
+  function handleEdit(venueId: string) {
+    const overlay = document.getElementById("edit-overlay");
+    if (overlay) {
+      overlay.classList.toggle("hidden");
+      overlay.classList.toggle("flex");
+      document.body.classList.toggle("overflow-hidden");
+      searchParams.set("editVenue", "true");
+      searchParams.set("id", venueId);
+      setSearchParams(searchParams);
+    }
+  }
+
   if (isLoading) {
     return <LoadingComp />;
   }
@@ -90,7 +103,10 @@ function YourVenueCard() {
                 </div>
               </div>
               <div className={`${auth ? "flex" : "hidden"} flex-col`}>
-                <button className="aspect-square bg-hdOrange w-10 h-auto flex items-center justify-center text-hdWhite">
+                <button
+                  className="aspect-square bg-hdOrange w-10 h-auto flex items-center justify-center text-hdWhite"
+                  onClick={handleEdit.bind(null, trip.id)}
+                >
                   <GearIcon weight="regular" size={22} />
                 </button>
                 <button
