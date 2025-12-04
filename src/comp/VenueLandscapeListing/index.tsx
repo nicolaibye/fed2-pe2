@@ -77,7 +77,7 @@ function VenueLandscapeListing() {
                     </p>
                     <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
                     <p>
-                      <span className="font-bold">£500</span> for {numberOfDays}
+                      <span className="font-bold">£500</span> for {numberOfDays}{" "}
                       nights
                     </p>
                   </div>

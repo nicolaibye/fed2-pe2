@@ -26,7 +26,8 @@ const url = "https://v2.api.noroff.dev/holidaze/venues";
 
 function VenueFocus() {
   const [hearted, setHearted] = useState(false);
-  const { numberOfGuests, setNumberOfGuests } = useSearchContext();
+  const { numberOfDays, numberOfGuests, setNumberOfGuests } =
+    useSearchContext();
   const navigate = useNavigate();
   const { id } = useParams();
   const {
@@ -302,6 +303,12 @@ function VenueFocus() {
               >
                 Reserve
               </button>
+            </div>
+            <div className="flex flex-col text-center text-base font-light">
+              <p>
+                <span className="font-bold">£{post?.price * numberOfDays}</span>{" "}
+                for {numberOfDays} nights
+              </p>
             </div>
           </form>
         </section>
