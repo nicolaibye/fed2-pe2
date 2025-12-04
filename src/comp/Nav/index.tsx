@@ -72,7 +72,7 @@ function Nav() {
                   fill="none"
                   className="md:hidden w-6 h-6"
                 >
-                  <g clip-path="url(#clip0_120_1824)">
+                  <g clipPath="url(#clip0_120_1824)">
                     <mask
                       id="mask0_120_1824"
                       maskUnits="userSpaceOnUse"

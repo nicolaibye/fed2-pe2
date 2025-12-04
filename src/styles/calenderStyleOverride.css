@@ -117,3 +117,20 @@
   box-shadow: none;
   border: 2px solid transparent;
 }
+
+.rdrDayDisabled {
+  background-color: #f4ede9;
+}
+
+.rdrDayDisabled .rdrDayNumber span {
+  color: #f4ede9;
+  background-color: #760933;
+  opacity: 0.75;
+  border-radius: 4px;
+  padding: 0.5rem;
+  line-height: 0.5rem;
+}
+
+.rdrDayToday .rdrDayNumber span:after {
+  background: #ec4e20;
+}

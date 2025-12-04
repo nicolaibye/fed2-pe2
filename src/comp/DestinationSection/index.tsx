@@ -78,7 +78,7 @@ function DestinationSection() {
                 className="w-[57px] h-auto"
                 viewBox="0 0 34 22"
               >
-                <g clip-path="url(#clip0_28_991)">
+                <g clipPath="url(#clip0_28_991)">
                   <mask
                     id="mask0_28_991"
                     maskUnits="userSpaceOnUse"
@@ -155,7 +155,7 @@ function DestinationSection() {
                 className="w-[57px] h-auto"
                 viewBox="0 0 35 32"
               >
-                <g clip-path="url(#clip0_28_1004)">
+                <g clipPath="url(#clip0_28_1004)">
                   <mask
                     id="mask0_28_1004"
                     maskUnits="userSpaceOnUse"

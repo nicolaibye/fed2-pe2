@@ -23,12 +23,12 @@ function GoogleMapsSearch() {
     >
       <iframe
         src="https://maps.google.com/maps?q=59.9139,10.7522&z=15&output=embed"
-        frameborder="0"
+        frameBorder="0"
         width="100%"
         height="100%"
-        allowfullscreen
+        allowFullScreen
         loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
+        referrerPolicy="no-referrer-when-downgrade"
       ></iframe>
       <button
         onClick={resizeMap}

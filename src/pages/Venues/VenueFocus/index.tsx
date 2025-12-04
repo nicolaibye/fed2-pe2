@@ -164,23 +164,29 @@ function VenueFocus() {
               <ul>
                 {[
                   {
+                    id: "attraction1",
                     location: "Imperial Hotel Tokyo",
                     distance: "4 min",
                     icon: <BuildingIcon weight="bold" />,
                   },
                   {
+                    id: "attraction2",
                     location: "Shibuya shopping district",
                     distance: "8 min",
                     icon: <ShoppingBagIcon weight="bold" />,
                   },
                   {
+                    id: "attraction3",
                     location: "Imperial Palace",
                     distance: "12 min",
                     icon: <MapPinSimpleIcon weight="bold" />,
                   },
                 ].map((item) => {
                   return (
-                    <li className="flex items-center justify-between gap-2 select-none">
+                    <li
+                      key={item.id}
+                      className="flex items-center justify-between gap-2 select-none"
+                    >
                       <div className="flex flex-row items-center gap-2">
                         {item.icon}
                         <h3 className="font-sans font-bold">{item.location}</h3>
