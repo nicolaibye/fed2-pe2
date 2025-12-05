@@ -115,9 +115,14 @@ function Account() {
               {user?.name}
             </h2>
             <div className="flex flex-row items-center gap-2 text-xs">
-              <p>{user?._count.venues} Venues</p>
+              <p>
+                {user?._count.venues} Venue{user?._count.venues > 1 && "s"}
+              </p>
               <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
-              <p>{user?._count.bookings} Bookings</p>
+              <p>
+                {user?._count.bookings} Booking
+                {user?._count.bookings > 1 && "s"}
+              </p>
             </div>
           </div>
         </div>
