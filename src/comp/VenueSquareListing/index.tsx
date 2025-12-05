@@ -112,6 +112,7 @@ function VenueSquareListing() {
           key={post.id}
           className={`w-full shrink-0 h-auto aspect-square flex flex-col relative`}
         >
+          <Link to={`/venue/${post.id}`} className="absolute inset-0 z-10" />
           <div className="flex-1 relative h-full w-full overflow-hidden">
             <img
               src={post.media[0].url}
@@ -121,7 +122,7 @@ function VenueSquareListing() {
             {adventureType === "affluent" ? (
               <>
                 <button
-                  className="absolute bottom-2 left-2 square-venue-label"
+                  className="absolute bottom-2 left-2 square-venue-label z-20"
                   onClick={(e) => handleExpressBookingSubmit(e, post.id)}
                 >
                   Express Checkout &#x2192;
@@ -150,12 +151,10 @@ function VenueSquareListing() {
                     <li className="square-venue-label w-fit">Free Wi-Fi</li>
                   )}
                   {post.meta.parking && (
-                    <li className="square-venue-label w-fit">Pool</li>
+                    <li className="square-venue-label w-fit">Parking</li>
                   )}
                   {post.meta.breakfast && (
-                    <li className="square-venue-label w-fit">
-                      Breakfast included
-                    </li>
+                    <li className="square-venue-label w-fit">Breakfast</li>
                   )}
                   {post.meta.pets && (
                     <li className="square-venue-label w-fit">Pets allowed</li>
@@ -164,8 +163,7 @@ function VenueSquareListing() {
               </>
             )}
           </div>
-          <div className="font-sans bg-hdYellow p-2 flex flex-col gap-2 rounded-b-xs relative">
-            <Link to={`/venue/${post.id}`} className="absolute inset-0 z-10" />
+          <div className="font-sans bg-hdYellow p-2 flex flex-col gap-2 rounded-b-xs">
             <div>
               <h3 className="font-sans font-bold leading-5">
                 {post.name.length > 20
@@ -195,8 +193,8 @@ function VenueSquareListing() {
         </li>
       ))}
       {filteredVenues.length === 0 && (
-        <p className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-          No venues found
+        <p className="grid grid-cols-1 xl:grid-cols-3">
+          No results found. Please try again with different search criteria.
         </p>
       )}
     </>

@@ -122,6 +122,7 @@ function VenueLandscapeListing() {
           key={post.id}
           className={`w-[90%] max-w-90 shrink-0 h-52 rounded-sm flex ${adventureType === "affluent" ? "flex-col" : "flex-row"} relative`}
         >
+          <Link to={`/venue/${post.id}`} className="absolute inset-0 z-10" />
           <img
             src={post.media[0].url}
             alt={post.media[0].alt}
@@ -129,9 +130,8 @@ function VenueLandscapeListing() {
           />
           <div className="flex flex-row ">
             <div
-              className={`font-sans flex-5 bg-hdYellow p-3 flex flex-col gap-2 ${adventureType === "affluent" ? "" : "justify-between"} relative`}
+              className={`font-sans flex-5 bg-hdYellow p-3 flex flex-col gap-2 ${adventureType === "affluent" ? "" : "justify-between"}`}
             >
-              <Link to={`/venue/${post.id}`} className="absolute inset-0" />
               {adventureType === "affluent" ? (
                 <>
                   <div>
@@ -187,7 +187,7 @@ function VenueLandscapeListing() {
                       {post.meta.wifi && (
                         <li className="flex flex-row items-center gap-1.5 relative h-5">
                           <WifiHighIcon size={16} className="mb-1" />
-                          <p className="leading-3">Wifi</p>
+                          <p className="leading-3">Free Wi-Fi</p>
                         </li>
                       )}
                       {post.meta.parking && (
@@ -232,7 +232,7 @@ function VenueLandscapeListing() {
               )}
             </div>
             <button
-              className={`bg-hdRed font-light text-hdWhite leading-5 aspect-square flex-2 ${adventureType === "affluent" ? "block" : "hidden"} `}
+              className={`bg-hdRed font-light text-hdWhite leading-5 aspect-square flex-2 ${adventureType === "affluent" ? "block" : "hidden"} z-20`}
               onClick={(e) => handleExpressBookingSubmit(e, post.id)}
             >
               Express Booking

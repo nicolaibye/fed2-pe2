@@ -28,11 +28,13 @@ function YourVenueCard() {
   );
   const { data, isLoading, isError } = useApi<Venue>(
     userToFetch
-      ? `https://v2.api.noroff.dev/holidaze/profiles/${userToFetch}/venues`
+      ? `https://v2.api.noroff.dev/holidaze/profiles/${userToFetch}/venues?_bookings=true`
       : "",
     userToFetch ? userFetchOptions : undefined
   );
   const venues = data || [];
+
+  console.log(venues);
 
   function handleDelete(venueId: string) {
     fetch(`https://v2.api.noroff.dev/holidaze/venues/${venueId}`, {
@@ -67,6 +69,14 @@ function YourVenueCard() {
     }
   }
 
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+    });
+  }
+
   if (isLoading) {
     return <LoadingComp />;
   }
@@ -82,40 +92,59 @@ function YourVenueCard() {
       ) : (
         <>
           {venues.map((trip) => (
-            <li key={trip.id} className={`w-full h-auto rounded-sm flex`}>
-              <img
-                src={trip.media[0]?.url}
-                alt={trip.media[0]?.alt}
-                className={`object-cover rounded-t-xs aspect-square h-20`}
-              />
-              <div
-                className={`font-sans w-full bg-hdYellow p-2 flex flex-col justify-center rounded-b-xs relative cursor-pointer`}
-              >
-                <Link
-                  to={`/venue/${trip.id}`}
-                  className="absolute inset-0 z-10"
+            <li key={trip.id}>
+              <div className={`w-full h-auto rounded-sm flex`}>
+                <img
+                  src={trip.media[0]?.url}
+                  alt={trip.media[0]?.alt}
+                  className={`object-cover rounded-t-xs aspect-square h-20`}
                 />
-                <h3 className="font-sans font-bold leading-5">{trip.name}</h3>
-                <div className="flex flex-row flex-wrap items-center text-xs">
-                  <p>
-                    {trip?.location.city}, {trip?.location.country}
-                  </p>
+                <div
+                  className={`font-sans w-full bg-hdYellow p-2 flex flex-col justify-center rounded-b-xs relative cursor-pointer`}
+                >
+                  <Link
+                    to={`/venue/${trip.id}`}
+                    className="absolute inset-0 z-10"
+                  />
+                  <h3 className="font-sans font-bold leading-5">{trip.name}</h3>
+                  <div className="flex flex-row flex-wrap items-center text-xs">
+                    <p>
+                      {trip?.location.city}, {trip?.location.country}
+                    </p>
+                  </div>
+                </div>
+                <div className={`${auth ? "flex" : "hidden"} flex-col`}>
+                  <button
+                    className="aspect-square bg-hdOrange w-10 h-auto flex items-center justify-center text-hdWhite"
+                    onClick={handleEdit.bind(null, trip.id)}
+                  >
+                    <GearIcon weight="regular" size={22} />
+                  </button>
+                  <button
+                    className="aspect-square bg-hdRed w-10 h-auto flex items-center justify-center text-hdWhite"
+                    onClick={handleDelete.bind(null, trip.id)}
+                  >
+                    <TrashIcon weight="regular" size={22} />
+                  </button>
                 </div>
               </div>
-              <div className={`${auth ? "flex" : "hidden"} flex-col`}>
-                <button
-                  className="aspect-square bg-hdOrange w-10 h-auto flex items-center justify-center text-hdWhite"
-                  onClick={handleEdit.bind(null, trip.id)}
+              <p className="text-base font-bold mt-2">Bookings</p>
+              {trip.bookings.map((booking) => (
+                <div
+                  className="flex flex-row text-base justify-between font-light"
+                  key={booking.id}
                 >
-                  <GearIcon weight="regular" size={22} />
-                </button>
-                <button
-                  className="aspect-square bg-hdRed w-10 h-auto flex items-center justify-center text-hdWhite"
-                  onClick={handleDelete.bind(null, trip.id)}
-                >
-                  <TrashIcon weight="regular" size={22} />
-                </button>
-              </div>
+                  <p>
+                    <span className="font-bold"> Dates: </span>{" "}
+                    {formatDate(booking.dateFrom)} to{" "}
+                    {formatDate(booking.dateTo)}
+                  </p>
+                  <p>
+                    <span className="font-bold">Guests: </span>
+                    {booking.guests}
+                  </p>
+                </div>
+              ))}
             </li>
           ))}
         </>

@@ -4,6 +4,7 @@ import type { User } from "../../types/profile.ts";
 import LoadingComp from "../../comp/LoadingComp";
 import ErrorComp from "../../comp/ErrorComp";
 import { format } from "date-fns";
+import { CalendarXIcon } from "@phosphor-icons/react";
 
 function UpcomingTrip() {
   const loggedInUser = localStorage.getItem("user")?.replace(/"/g, "");
@@ -30,6 +31,27 @@ function UpcomingTrip() {
     loggedInUser ? userFetchOptions : undefined
   );
 
+  function handleCancelTrip(bookingId: string) {
+    fetch(`https://v2.api.noroff.dev/holidaze/bookings/${bookingId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "X-Noroff-API-Key": import.meta.env.VITE_API_TOKEN,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          window.location.reload();
+        } else {
+          throw new Error("Failed to cancel trip");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   if (isLoading) {
     return <LoadingComp />;
   }
@@ -50,8 +72,21 @@ function UpcomingTrip() {
           return (
             <li
               key={booking.id}
-              className={`w-full h-auto flex flex-col base-shadow`}
+              className={`w-full h-auto flex flex-col base-shadow relative`}
             >
+              <button
+                className="absolute top-4 right-4 z-100 bg-hdRed rounded-full flex flex-row items-center gap-2"
+                onClick={() => handleCancelTrip(booking.id)}
+              >
+                <div className="circle-button base-shadow">
+                  <CalendarXIcon
+                    weight="regular"
+                    size={20}
+                    className="text-hdWhite "
+                  />
+                </div>
+                <p className="text-hdWhite pr-3">Cancel trip</p>
+              </button>
               <img
                 src={booking.venue.media[0].url}
                 alt={booking.venue.media[0].alt}

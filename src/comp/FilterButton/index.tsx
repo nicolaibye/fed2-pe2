@@ -137,7 +137,7 @@ function FilterButton() {
         </div>
         <div className="flex flex-col items-start font-sans">
           <h3 className="font-bold text-base mb-1">Amenities</h3>
-          {["Free Wi-Fi", "Pool", "Parking", "Pet-friendly", "Spa", "Bar"].map(
+          {["Free Wi-Fi", "Breakfast", "Parking", "Pets allowed"].map(
             (item) => {
               return (
                 <label className="flex items-center gap-2 cursor-pointer select-none">
@@ -269,21 +269,16 @@ function FilterButton() {
               </button>
             </div>
             <div className="hidden flex-col items-end font-sans gap-1 filter">
-              {[
-                "Free Wi-Fi",
-                "Pool",
-                "Parking",
-                "Pet-friendly",
-                "Spa",
-                "Bar",
-              ].map((item) => {
-                return (
-                  <label className="flex items-center gap-2 select-none">
-                    <input type="checkbox" className="peer sr-only" />
-                    <span className="filter-label">{item}</span>
-                  </label>
-                );
-              })}
+              {["Free Wi-Fi", "Breakfast", "Parking", "Pets allowed"].map(
+                (item) => {
+                  return (
+                    <label className="flex items-center gap-2 select-none">
+                      <input type="checkbox" className="peer sr-only" />
+                      <span className="filter-label">{item}</span>
+                    </label>
+                  );
+                }
+              )}
             </div>
           </div>
           <div className="flex flex-col-reverse items-end gap-2">
