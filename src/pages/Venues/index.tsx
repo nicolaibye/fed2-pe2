@@ -6,7 +6,7 @@ import VenueLandscapeListing from "../../comp/VenueLandscapeListing";
 function Venues() {
   return (
     <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-10 w-full lg:mx-auto lg:max-w-7xl">
-      <section className="flex flex-col gap-7 overflow-x-scroll">
+      <section className="flex flex-col gap-7 overflow-x-scroll no-scrollbar">
         <div>
           <input
             id="search-input"
@@ -24,7 +24,7 @@ function Venues() {
         </div>
         <div>
           <h2 className="text-2xl font-serif font-bold mb-2">Top Venues</h2>
-          <ul className="flex flex-row gap-2 overflow-x-scroll rounded-xs no-scrollbar">
+          <ul className="flex flex-row gap-4 overflow-x-scroll rounded-xs no-scrollbar">
             <VenueLandscapeListing />
           </ul>
         </div>

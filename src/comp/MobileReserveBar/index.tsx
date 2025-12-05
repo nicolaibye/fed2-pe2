@@ -22,7 +22,7 @@ function MobileReserveBar() {
     };
   }
 
-  async function handleVenueSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleBookingSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
       const response = await fetch(
@@ -64,7 +64,7 @@ function MobileReserveBar() {
       </div>
       <button
         className="text-lg font-bold font-serif px-3 py-1 text-hdBlack bg-hdWhite cut-corner z-1001"
-        onClick={handleVenueSubmit}
+        onClick={handleBookingSubmit}
       >
         Reserve
       </button>
