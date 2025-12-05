@@ -57,7 +57,7 @@ function Home() {
       </section>
       <section>
         <h2 className="text-2xl font-serif font-bold mb-2">We recommend</h2>
-        <ul className="flex flex-row flex-nowrap gap-2.5 overflow-x-scroll justify-start rounded-xs">
+        <ul className="flex flex-row flex-nowrap gap-2.5 overflow-x-scroll justify-start rounded-xs no-scrollbar">
           <VenueLandscapeListing />
         </ul>
       </section>

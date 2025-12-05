@@ -6,6 +6,9 @@ export function useApi<T>(url: string, options?: RequestInit) {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    if (!url) {
+      return;
+    }
     async function fetchData() {
       try {
         setIsLoading(true);

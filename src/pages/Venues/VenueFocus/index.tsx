@@ -285,6 +285,14 @@ function VenueFocus() {
                   Reserve
                 </button>
               </div>
+              <div className="flex flex-col text-center text-base font-light">
+                <p>
+                  <span className="font-bold">
+                    £{post?.price * numberOfDays}
+                  </span>{" "}
+                  for {numberOfDays} nights
+                </p>
+              </div>
             </form>
           </section>
           <section className="mt-5 flex flex-col gap-2 -mr-5">
@@ -295,7 +303,7 @@ function VenueFocus() {
           </section>
           <section className="mt-5 flex flex-col gap-2">
             <h2 className="second-heading">Similar Venues</h2>
-            <ul className="flex flex-row gap-2 overflow-x-scroll rounded-xs">
+            <ul className="flex flex-row gap-2 overflow-x-scroll rounded-xs no-scrollbar">
               <VenueLandscapeListing />
             </ul>
           </section>

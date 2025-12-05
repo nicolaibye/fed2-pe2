@@ -9,6 +9,8 @@ import { useSearchContext } from "../../context/SearchContext/useSearchContext";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../hook/useApi";
 import type { Venue } from "../../types/venue";
+import ErrorComp from "../ErrorComp";
+import LoadingComp from "../LoadingComp";
 
 function DatePicker() {
   const {
@@ -97,8 +99,8 @@ function DatePicker() {
     }
   }
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error</p>;
+  if (isLoading) return <LoadingComp />;
+  if (isError) return <ErrorComp />;
 
   const formatted =
     startDate && endDate
