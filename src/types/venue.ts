@@ -15,7 +15,7 @@ export interface Venue {
   meta: VenueMeta;
   location: VenueLocation;
   owner: VenueOwner;
-  bookings: Booking[];
+  bookings: VenueBooking[];
   _count: {
     bookings: number;
   };
@@ -51,10 +51,22 @@ export interface VenueOwner {
   banner: MediaItem;
 }
 
+export interface VenueBooking {
+  id: string;
+  dateFrom: string;
+  dateTo: string;
+  guests: number;
+  created: string;
+  updated: string;
+}
+
 export interface Booking {
-  name: string;
-  email: string;
-  bio: string;
-  avatar: MediaItem;
-  banner: MediaItem;
+  id: string;
+  dateFrom: string;
+  dateTo: string;
+  guests: number;
+  created: string;
+  updated: string;
+  venue: Venue;
+  customer: VenueOwner;
 }

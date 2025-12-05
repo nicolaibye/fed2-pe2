@@ -3,12 +3,26 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from "../DatePicker";
 import { useContext } from "react";
 import AdventureContext from "../../context/AdventureContext";
+import { format } from "date-fns";
 
 function DestinationSection() {
-  const { isSummary: searchSummary } = useSearchContext();
+  const {
+    isSummary: searchSummary,
+    startDate,
+    endDate,
+    numberOfGuests,
+    setNumberOfGuests,
+    location,
+    setLocation,
+  } = useSearchContext();
   const { adventureType, setAdventureType } = useContext(AdventureContext);
   const { setIsSummary } = useSearchContext();
   const navigate = useNavigate();
+
+  const formatted =
+    startDate && endDate
+      ? ` ${format(startDate, "MMM d")} til ${format(endDate, "MMM d")}`
+      : " unknown dates";
 
   const venuePage = window.location.pathname === "/venue";
   const homePage =
@@ -28,7 +42,12 @@ function DestinationSection() {
     <div
       className={`${venuePage || homePage ? "flex" : "hidden"} flex-col w-full bg-hdRed text-hdWhite p-4 relative`}
     >
-      <div className="absolute inset-1 bg-[url(/SwirlPattern.svg)] w-full h-full top-0 left-0 bg-repeat"></div>
+      <img
+        src="/shadows/6_2k_p.png"
+        alt=""
+        className={`z-500 w-auto h-80 md:h-auto md:w-2/3 object-cover right-0 top-0 object-middle md:object-right absolute opacity-75 pointer-events-none`}
+      />
+      <div className="absolute inset-1 bg-[url(/SwirlPattern.svg)] w-full h-full top-0 left-0 bg-repeat z-0"></div>
       <form
         className={`flex flex-col ${searchSummary ? "" : "gap-3"} z-10 mx-auto`}
       >
@@ -52,14 +71,14 @@ function DestinationSection() {
             />
             <label
               htmlFor="adventurerChoice1"
-              className={`radio-label ${searchSummary ? "hidden peer-checked:flex pr-3" : "flex"} `}
+              className={`radio-label whitespace-nowrap ${searchSummary ? "hidden peer-checked:flex pr-3" : "flex"} `}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-[57px] h-auto"
                 viewBox="0 0 34 22"
               >
-                <g clip-path="url(#clip0_28_991)">
+                <g clipPath="url(#clip0_28_991)">
                   <mask
                     id="mask0_28_991"
                     maskUnits="userSpaceOnUse"
@@ -110,7 +129,11 @@ function DestinationSection() {
                   </clipPath>
                 </defs>
               </svg>
-              <span>Affluent</span>
+              <span>
+                {numberOfGuests && searchSummary ? `${numberOfGuests} ` : ""}
+                Affluent
+                {numberOfGuests > 1 && searchSummary ? "s" : ""}
+              </span>
             </label>
           </div>
           <div>
@@ -125,14 +148,14 @@ function DestinationSection() {
             />
             <label
               htmlFor="adventurerChoice2"
-              className={`radio-label ${searchSummary ? "hidden peer-checked:flex pr-3" : "flex"}`}
+              className={`radio-label whitespace-nowrap ${searchSummary ? "hidden peer-checked:flex pr-3" : "flex"}`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-[57px] h-auto"
                 viewBox="0 0 35 32"
               >
-                <g clip-path="url(#clip0_28_1004)">
+                <g clipPath="url(#clip0_28_1004)">
                   <mask
                     id="mask0_28_1004"
                     maskUnits="userSpaceOnUse"
@@ -219,7 +242,11 @@ function DestinationSection() {
                   </clipPath>
                 </defs>
               </svg>
-              <span>Guardian</span>
+              <span>
+                {numberOfGuests && searchSummary ? `${numberOfGuests} ` : ""}
+                Guardian
+                {numberOfGuests > 1 && searchSummary ? "s" : ""}
+              </span>
             </label>
           </div>
           <div>
@@ -234,7 +261,7 @@ function DestinationSection() {
             />
             <label
               htmlFor="adventurerChoice3"
-              className={`radio-label ${searchSummary ? "hidden peer-checked:flex pr-3" : "flex"} `}
+              className={`radio-label whitespace-nowrap ${searchSummary ? "hidden peer-checked:flex pr-3" : "flex"} `}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -334,7 +361,11 @@ function DestinationSection() {
                   fill="currentColor"
                 />
               </svg>
-              <span className="">Explorer</span>
+              <span>
+                {numberOfGuests && searchSummary ? `${numberOfGuests} ` : ""}
+                Explorer
+                {numberOfGuests > 1 && searchSummary ? "s" : ""}
+              </span>
             </label>
             <p className="text-sm hidden">
               You are a traveler traveler. Going with an amount of guests.
@@ -344,8 +375,12 @@ function DestinationSection() {
             onClick={openSummary}
             className={`cursor-pointer ${searchSummary ? "block" : "hidden"} font-light text-sm font-sans pb-1`}
           >
-            Travelling to <span className="font-bold">Tokyo, Japan</span>{" "}
-            24.01.2025 til 30.01.2025
+            Travelling to{" "}
+            <span className="font-bold capitalize">
+              {location ? location : "somewhere"}
+            </span>{" "}
+            on
+            {formatted}
           </p>
         </div>
         <div className="w-full base-shadow">
@@ -353,14 +388,16 @@ function DestinationSection() {
             type="text"
             placeholder="Where are you going?"
             className={`input-field w-full ${searchSummary ? "hidden peer-checked:flex" : ""} cut-corner`}
+            onChange={(e) => setLocation(e.target.value)}
           />
         </div>
-        <div className="grid grid-cols-2 gap-3 w-full relative base-shadow">
+        <div className="grid grid-cols-2 gap-3 w-full relative base-shadow z-11">
           <DatePicker />
           <input
-            type="text"
+            type="number"
             placeholder="Guests"
             className={`input-field ${searchSummary ? "hidden peer-checked:flex" : ""} cut-corner`}
+            onChange={(e) => setNumberOfGuests(Number(e.target.value))}
           />
         </div>
         <div className="base-shadow">

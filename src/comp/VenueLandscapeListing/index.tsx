@@ -13,28 +13,106 @@ import { StarIcon } from "@phosphor-icons/react";
 import ErrorComp from "../ErrorComp/index.tsx";
 import LoadingComp from "../LoadingComp/index.tsx";
 import { Link } from "react-router-dom";
+import { useSearchContext } from "../../context/SearchContext/useSearchContext";
 
-const url = "https://v2.api.noroff.dev/holidaze/venues";
+const url = "https://v2.api.noroff.dev/holidaze/venues?_bookings=true";
 
 function VenueLandscapeListing() {
   const { adventureType } = useAdventureContext();
   const { data: posts, isLoading, isError } = useApi<Venue>(url);
-  const errorMessage = "Please try again later.";
+  const { numberOfDays, startDate, endDate, numberOfGuests, location } =
+    useSearchContext();
   const venues = useMemo(() => {
     if (!posts) return null;
     return addExtraLabels(posts);
   }, [posts]);
+  const token = localStorage.getItem("token");
+
+  function rangesOverlap(start1: Date, end1: Date, start2: Date, end2: Date) {
+    return start1 <= end2 && end1 >= start2;
+  }
+
+  const filteredVenues = useMemo(() => {
+    if (!venues) return [];
+    return venues.filter((venue) => {
+      if (startDate && endDate) {
+        const overlap = venue.bookings.some((booking) => {
+          return rangesOverlap(
+            startDate,
+            endDate,
+            new Date(booking.dateFrom),
+            new Date(booking.dateTo)
+          );
+        });
+        if (overlap) return false;
+      }
+
+      if (numberOfGuests && venue.maxGuests < numberOfGuests) return false;
+      if (location && location.length > 0) {
+        const venueLocation = location.toLowerCase();
+        const city = venue.location.city?.toLowerCase() || "";
+        const country = venue.location.country?.toLowerCase() || "";
+        const address = venue.location.address?.toLowerCase() || "";
+        const match =
+          city.includes(venueLocation) ||
+          country.includes(venueLocation) ||
+          address.includes(venueLocation);
+        if (!match) return false;
+      }
+
+      return true;
+    });
+  }, [venues, startDate, endDate, numberOfGuests, location]);
   const topVenues = useMemo(() => {
     if (!venues) return null;
-    return venues.filter((venue) => venue.rating >= 5);
-  }, [venues]);
+    const venuesToUse = filteredVenues ? filteredVenues : venues;
+    return venuesToUse.filter((venue) => venue.rating >= 4);
+  }, [venues, filteredVenues]);
+
+  function buildBookingPayload(id: string) {
+    return {
+      dateFrom: startDate?.toISOString(),
+      dateTo: endDate?.toISOString(),
+      guests: Number(numberOfGuests),
+      venueId: id,
+    };
+  }
+
+  async function handleExpressBookingSubmit(
+    event: React.MouseEvent<HTMLButtonElement>,
+    id: string
+  ) {
+    event.preventDefault();
+    try {
+      const response = await fetch(
+        `https://v2.api.noroff.dev/holidaze/bookings`,
+        {
+          method: "post",
+          body: JSON.stringify(buildBookingPayload(id)),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "X-Noroff-API-Key": import.meta.env.VITE_API_TOKEN,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error();
+      }
+      if (response.ok) {
+        alert("Booking successful!");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   if (isLoading) {
     return <LoadingComp />;
   }
 
   if (isError) {
-    return <ErrorComp errorMessage={errorMessage} />;
+    return <ErrorComp />;
   }
 
   return (
@@ -44,7 +122,6 @@ function VenueLandscapeListing() {
           key={post.id}
           className={`w-[90%] max-w-90 shrink-0 h-52 rounded-sm flex ${adventureType === "affluent" ? "flex-col" : "flex-row"} relative`}
         >
-          <Link to={`/venue/${post.id}`} className="absolute inset-0 z-10" />
           <img
             src={post.media[0].url}
             alt={post.media[0].alt}
@@ -52,8 +129,9 @@ function VenueLandscapeListing() {
           />
           <div className="flex flex-row ">
             <div
-              className={`font-sans flex-5 bg-hdYellow p-3 flex flex-col gap-2 ${adventureType === "affluent" ? "" : "justify-between"}`}
+              className={`font-sans flex-5 bg-hdYellow p-3 flex flex-col gap-2 ${adventureType === "affluent" ? "" : "justify-between"} relative`}
             >
+              <Link to={`/venue/${post.id}`} className="absolute inset-0" />
               {adventureType === "affluent" ? (
                 <>
                   <div>
@@ -75,7 +153,8 @@ function VenueLandscapeListing() {
                     </p>
                     <div className="bg-hdBlack w-0.5 h-0.5 rounded-full"></div>
                     <p>
-                      <span className="font-bold">£500</span> for 4 nights
+                      <span className="font-bold">£500</span> for {numberOfDays}{" "}
+                      nights
                     </p>
                   </div>
                 </>
@@ -143,8 +222,10 @@ function VenueLandscapeListing() {
                       )}
                     </ul>
                     <p className="text-lg">
-                      <span className="font-bold">£{post.price * 4}</span> for 4
-                      nights
+                      <span className="font-bold">
+                        £{post.price * numberOfDays}
+                      </span>{" "}
+                      for {numberOfDays} nights
                     </p>
                   </div>
                 </>
@@ -152,12 +233,18 @@ function VenueLandscapeListing() {
             </div>
             <button
               className={`bg-hdRed font-light text-hdWhite leading-5 aspect-square flex-2 ${adventureType === "affluent" ? "block" : "hidden"} `}
+              onClick={(e) => handleExpressBookingSubmit(e, post.id)}
             >
               Express Booking
             </button>
           </div>
         </li>
       ))}
+      {topVenues?.length === 0 && (
+        <p>
+          No results found. Please try again with different search criteria.
+        </p>
+      )}
     </>
   );
 }

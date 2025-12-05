@@ -5,26 +5,26 @@ import VenueLandscapeListing from "../../comp/VenueLandscapeListing";
 
 function Venues() {
   return (
-    <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-10 w-full">
-      <section className="flex flex-col gap-7 overflow-x-scroll">
+    <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-10 w-full lg:mx-auto lg:max-w-7xl">
+      <section className="flex flex-col gap-7 overflow-x-scroll no-scrollbar">
         <div>
           <input
-            id="input"
-            className="w-full"
+            id="search-input"
+            className="w-full input-field cut-corner search mt-5 md:mt-0"
             type="search"
-            autocomplete="off"
-            spellcheck="false"
+            autoComplete="on"
+            spellCheck="false"
             role="combobox"
             aria-controls="matches"
             aria-live="polite"
             aria-expanded="false"
             aria-description=""
-            placeholder="Search Google or type a URL"
+            placeholder="Looking for anything specific?"
           ></input>
         </div>
         <div>
           <h2 className="text-2xl font-serif font-bold mb-2">Top Venues</h2>
-          <ul className="flex flex-row gap-2 overflow-x-scroll rounded-xs">
+          <ul className="flex flex-row gap-4 overflow-x-scroll rounded-xs no-scrollbar">
             <VenueLandscapeListing />
           </ul>
         </div>

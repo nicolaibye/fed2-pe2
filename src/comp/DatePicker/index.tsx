@@ -1,14 +1,28 @@
-import { useState } from "react";
-import { format } from "date-fns";
+import { useState, useMemo } from "react";
+import { differenceInDays, format } from "date-fns";
 import { DateRange } from "react-date-range";
 import type { Range, OnChangeProps } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import "../../styles/calenderStyleOverride.css";
 import { useSearchContext } from "../../context/SearchContext/useSearchContext";
+import { useParams } from "react-router-dom";
+import { useApi } from "../../hook/useApi";
+import type { Venue } from "../../types/venue";
+import ErrorComp from "../ErrorComp";
+import LoadingComp from "../LoadingComp";
 
 function DatePicker() {
-  const { isSummary: searchSummary } = useSearchContext();
+  const {
+    isSummary: searchSummary,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    setNumberOfDays,
+  } = useSearchContext();
   const [open, setOpen] = useState(false);
+  const { id: venueId } = useParams();
   const [range, setRange] = useState<Range[]>([
     {
       startDate: null,
@@ -17,9 +31,80 @@ function DatePicker() {
     },
   ]);
 
+  const token = localStorage.getItem("token");
+  const userFetchOptions = useMemo(
+    () => ({
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "X-Noroff-API-Key": import.meta.env.VITE_API_TOKEN,
+      },
+    }),
+    [token]
+  );
+  const onVenuePage = Boolean(venueId);
+  const inputChecker = !onVenuePage && searchSummary;
+  const url = onVenuePage
+    ? `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`
+    : null;
+  const {
+    data: venueData,
+    isLoading,
+    isError,
+  } = useApi<Venue>(url ?? "", userFetchOptions);
+
+  function getDatesBetween(start: Date, end: Date) {
+    const dates: Date[] = [];
+    const currentDate = new Date(start);
+    while (currentDate <= end) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dates;
+  }
+
+  const disabledDates = useMemo(() => {
+    if (!onVenuePage) return [];
+    const bookings = venueData?.bookings;
+    if (!bookings) return [];
+    const allDates: Date[] = [];
+    bookings.forEach((booking) => {
+      const start = new Date(booking.dateFrom);
+      const end = new Date(booking.dateTo);
+      allDates.push(...getDatesBetween(start, end));
+    });
+
+    return allDates;
+  }, [venueData, onVenuePage]);
+
+  function handleDateChange(item: OnChangeProps) {
+    const selection = item.selection;
+
+    setRange([selection]);
+
+    const newStartDate = selection.startDate;
+    const newEndDate = selection.endDate;
+
+    if (newStartDate) {
+      setStartDate(newStartDate);
+    }
+
+    if (newEndDate) {
+      setEndDate(newEndDate);
+    }
+
+    if (newStartDate && newEndDate) {
+      setNumberOfDays(differenceInDays(newEndDate, newStartDate));
+    }
+  }
+
+  if (isLoading) return <LoadingComp />;
+  if (isError) return <ErrorComp />;
+
   const formatted =
-    range[0].startDate && range[0].endDate
-      ? `${format(range[0].startDate, "MM/dd/yyyy")} - ${format(range[0].endDate, "MM/dd/yyyy")}`
+    startDate && endDate
+      ? `${format(startDate, "MMM d")} - ${format(endDate, "MMM d")}`
       : "Dates";
 
   return (
@@ -30,14 +115,15 @@ function DatePicker() {
         onClick={() => setOpen(!open)}
         value={formatted}
         placeholder="Dates"
-        className={`input-field ${searchSummary ? "hidden peer-checked:flex" : ""} cut-corner`}
+        className={`input-field ${inputChecker ? "hidden" : ""} cut-corner`}
       />
       {open && (
         <DateRange
-          onChange={(item: OnChangeProps) => setRange([item.selection])}
+          onChange={handleDateChange}
+          disabledDates={onVenuePage ? disabledDates : undefined}
           moveRangeOnFirstSelection={false}
           ranges={range}
-          className="absolute top-16 z-50 w-full"
+          className="absolute z-50 w-full"
         />
       )}
     </>

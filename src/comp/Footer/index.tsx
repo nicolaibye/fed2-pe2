@@ -17,7 +17,7 @@ function Footer() {
                 "Blog",
               ].map((item) => {
                 return (
-                  <li>
+                  <li key={item}>
                     <Link to="">{item}</Link>
                   </li>
                 );
@@ -35,7 +35,7 @@ function Footer() {
                 "Partners",
               ].map((item) => {
                 return (
-                  <li>
+                  <li key={item}>
                     <Link to="">{item}</Link>
                   </li>
                 );
@@ -53,7 +53,7 @@ function Footer() {
                 "Responsible Travel",
               ].map((item) => {
                 return (
-                  <li>
+                  <li key={item}>
                     <Link to="">{item}</Link>
                   </li>
                 );
@@ -71,7 +71,7 @@ function Footer() {
                 "Feedback",
               ].map((item) => {
                 return (
-                  <li>
+                  <li key={item}>
                     <Link to="">{item}</Link>
                   </li>
                 );

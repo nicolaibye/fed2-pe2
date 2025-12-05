@@ -20,11 +20,19 @@ import { copyUrlDesktop, copyUrlMobile } from "../../../js/helper/copyUrl.tsx";
 import LoadingComp from "../../../comp/LoadingComp/index.tsx";
 import ErrorComp from "../../../comp/ErrorComp/index.tsx";
 import { Link } from "react-router-dom";
+import { useSearchContext } from "../../../context/SearchContext/useSearchContext.ts";
 
 const url = "https://v2.api.noroff.dev/holidaze/venues";
 
 function VenueFocus() {
   const [hearted, setHearted] = useState(false);
+  const {
+    numberOfDays,
+    numberOfGuests,
+    setNumberOfGuests,
+    startDate,
+    endDate,
+  } = useSearchContext();
   const navigate = useNavigate();
   const { id } = useParams();
   const {
@@ -52,6 +60,41 @@ function VenueFocus() {
       : "",
     post ? userFetchOptions : undefined
   );
+
+  function buildBookingPayload() {
+    return {
+      dateFrom: startDate?.toISOString(),
+      dateTo: endDate?.toISOString(),
+      guests: Number(numberOfGuests),
+      venueId: id,
+    };
+  }
+
+  async function handleVenueSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const response = await fetch(
+        `https://v2.api.noroff.dev/holidaze/bookings`,
+        {
+          method: "post",
+          body: JSON.stringify(buildBookingPayload()),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "X-Noroff-API-Key": import.meta.env.VITE_API_TOKEN,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error();
+      }
+      if (response.ok) {
+        alert("Booking successful!");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   if (isLoading) {
     return <LoadingComp />;
@@ -162,23 +205,29 @@ function VenueFocus() {
               <ul>
                 {[
                   {
+                    id: "attraction1",
                     location: "Imperial Hotel Tokyo",
                     distance: "4 min",
                     icon: <BuildingIcon weight="bold" />,
                   },
                   {
+                    id: "attraction2",
                     location: "Shibuya shopping district",
                     distance: "8 min",
                     icon: <ShoppingBagIcon weight="bold" />,
                   },
                   {
+                    id: "attraction3",
                     location: "Imperial Palace",
                     distance: "12 min",
                     icon: <MapPinSimpleIcon weight="bold" />,
                   },
                 ].map((item) => {
                   return (
-                    <li className="flex items-center justify-between gap-2 select-none">
+                    <li
+                      key={item.id}
+                      className="flex items-center justify-between gap-2 select-none"
+                    >
                       <div className="flex flex-row items-center gap-2">
                         {item.icon}
                         <h3 className="font-sans font-bold">{item.location}</h3>
@@ -215,23 +264,34 @@ function VenueFocus() {
               </div>
             </div>
           </section>
-          <section className="my-12 flex flex-col mx-auto gap-2 max-w-80 lg:hidden">
+          <section className="my-12 flex flex-col mx-auto gap-2 max-w-80 lg:hidden z-0">
             <form className="flex flex-col gap-2">
-              <div className="grid grid-cols-2 gap-3 w-full relative base-shadow">
+              <div className="grid grid-cols-2 gap-3 w-full relative base-shadow z-50">
                 <DatePicker />
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Guests"
                   className={`input-field cut-corner`}
+                  onChange={(e) => setNumberOfGuests(e.target.value)}
+                  value={numberOfGuests}
                 />
               </div>
               <div className="base-shadow">
                 <button
                   type="submit"
                   className={`text-xl font-extrabold font-serif w-full h-10 text-hdBlack bg-hdYellow cut-corner`}
+                  onClick={handleVenueSubmit}
                 >
                   Reserve
                 </button>
+              </div>
+              <div className="flex flex-col text-center text-base font-light">
+                <p>
+                  <span className="font-bold">
+                    £{post?.price * numberOfDays}
+                  </span>{" "}
+                  for {numberOfDays} nights
+                </p>
               </div>
             </form>
           </section>
@@ -243,7 +303,7 @@ function VenueFocus() {
           </section>
           <section className="mt-5 flex flex-col gap-2">
             <h2 className="second-heading">Similar Venues</h2>
-            <ul className="flex flex-row gap-2 overflow-x-scroll rounded-xs">
+            <ul className="flex flex-row gap-2 overflow-x-scroll rounded-xs no-scrollbar">
               <VenueLandscapeListing />
             </ul>
           </section>
@@ -273,23 +333,32 @@ function VenueFocus() {
           </section>
           <MobileReserveBar />
         </div>
-        <section className="my-12 hidden flex-col mx-auto gap-2 max-w-80 lg:flex">
+        <section className="my-12 hidden flex-col mx-auto gap-2 max-w-80 lg:flex z-0">
           <form className="flex flex-col gap-2">
-            <div className="grid grid-cols-2 gap-3 w-full relative base-shadow">
+            <div className="grid grid-cols-2 gap-3 w-full relative base-shadow z-50">
               <DatePicker />
               <input
-                type="text"
+                type="number"
                 placeholder="Guests"
                 className={`input-field cut-corner`}
+                onChange={(e) => setNumberOfGuests(e.target.value)}
+                value={numberOfGuests}
               />
             </div>
             <div className="base-shadow">
               <button
                 type="submit"
                 className={`text-xl font-extrabold font-serif w-full h-10 text-hdBlack bg-hdYellow cut-corner`}
+                onClick={handleVenueSubmit}
               >
                 Reserve
               </button>
+            </div>
+            <div className="flex flex-col text-center text-base font-light">
+              <p>
+                <span className="font-bold">£{post?.price * numberOfDays}</span>{" "}
+                for {numberOfDays} nights
+              </p>
             </div>
           </form>
         </section>

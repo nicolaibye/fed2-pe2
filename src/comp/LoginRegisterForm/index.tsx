@@ -95,7 +95,7 @@ function LoginRegisterForm() {
   return (
     <>
       {register ? (
-        <form action="" className="flex flex-col w-full p-5 gap-2">
+        <form action="" className="flex flex-col w-full p-5 gap-2 max-w-md">
           <div className="base-shadow">
             <input
               name="name"
@@ -175,7 +175,7 @@ function LoginRegisterForm() {
           </div>
         </form>
       ) : (
-        <form action="" className="flex flex-col w-full p-5 gap-2">
+        <form action="" className="flex flex-col w-full p-5 gap-2 max-w-md">
           <div className="base-shadow">
             <input
               name="email"
