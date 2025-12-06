@@ -9,8 +9,11 @@ import {
   PuzzlePieceIcon,
   StarIcon,
 } from "@phosphor-icons/react";
+import { useFilterContext } from "../../context/FilterContext/useFilterContext";
 
 function FilterButton() {
+  const { filters, toggleFilter } = useFilterContext();
+
   const openFilter = () => {
     const button = document.getElementById("filterButton");
     const filter = document.getElementById("filter");
@@ -27,16 +30,26 @@ function FilterButton() {
   };
 
   const updateFilterCounts = () => {
-    const checkboxes = document.querySelectorAll("input[type='checkbox']");
     const badge = document.getElementById("filterOverallCount");
     const options = document.getElementById("filter");
 
-    if (!badge || !checkboxes.length) return;
+    if (!badge) return;
 
-    const count = [...checkboxes].filter((checkbox) => checkbox.checked).length;
-    badge.textContent = count;
+    const contextCount =
+      filters.prices.length +
+      filters.types.length +
+      filters.ratings.length +
+      filters.amenities.length;
 
-    if (count > 0 && !options?.classList.contains("open")) {
+    const domCount = [
+      ...document.querySelectorAll("input[type='checkbox'].legacy-filter"),
+    ].filter((checkbox) => checkbox.checked).length;
+
+    const total = contextCount + domCount;
+
+    badge.textContent = String(total);
+
+    if (total > 0 && !options?.classList.contains("open")) {
       badge.classList.add("open");
     } else {
       badge.classList.remove("open");
@@ -58,32 +71,40 @@ function FilterButton() {
     if (options?.classList.contains("open")) {
       badge?.classList.remove("open");
     } else {
-      updateCounts();
+      // updateCounts(filters);
     }
   };
 
-  const updateCounts = () => {
-    const groups = document.querySelectorAll("div.flex-col-reverse");
+  // const updateCounts = (filters) => {
+  //   const groups = document.querySelectorAll("div.flex-col-reverse");
 
-    groups.forEach((group) => {
-      const checkboxes = group.querySelectorAll("input[type='checkbox']");
-      const badge = group.querySelector(".filter-badge");
-      const options = group.querySelector(".filter");
+  //   groups.forEach((group) => {
+  //     const element = group as HTMLElement;
+  //     const badge = element.querySelector(
+  //       ".filter-badge"
+  //     ) as HTMLElement | null;
+  //     const options = element.querySelector(".filter") as HTMLElement | null;
 
-      if (!badge || !checkboxes.length) return;
+  //     if (!badge) return;
 
-      const count = [...checkboxes].filter(
-        (checkbox) => checkbox.checked
-      ).length;
-      badge.textContent = count;
+  //     const groupKey = element.dataset.filterKey;
+  //     const contextCount = groupKey ? filters[groupKey].length : 0;
 
-      if (count > 0 && !options?.classList.contains("open")) {
-        badge.classList.add("open");
-      } else {
-        badge.classList.remove("open");
-      }
-    });
-  };
+  //     const domCount = [
+  //       ...element.querySelectorAll("input[type='checkbox'].legacy-filter"),
+  //     ].filter((checkbox) => (checkbox as HTMLInputElement).checked).length;
+
+  //     const total = contextCount + domCount;
+
+  //     badge.textContent = String(total);
+
+  //     if (total > 0 && !options?.classList.contains("open")) {
+  //       badge.classList.add("open");
+  //     } else {
+  //       badge.classList.remove("open");
+  //     }
+  //   });
+  // };
 
   return (
     <>
@@ -96,7 +117,12 @@ function FilterButton() {
           {["Under €50", "€50-100", "€100-200", "€200+"].map((item) => {
             return (
               <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input type="checkbox" className="peer sr-only" />
+                <input
+                  type="checkbox"
+                  className="peer sr-only"
+                  checked={filters.prices.includes(item)}
+                  onChange={() => toggleFilter("prices", item)}
+                />
                 <span className="custom-checkbox">
                   <CheckIcon size={16} weight="bold" />
                 </span>
@@ -111,7 +137,12 @@ function FilterButton() {
             (item) => {
               return (
                 <label className="flex items-center gap-2 cursor-pointer select-none">
-                  <input type="checkbox" className="peer sr-only" />
+                  <input
+                    type="checkbox"
+                    className="peer sr-only"
+                    checked={filters.types.includes(item)}
+                    onChange={() => toggleFilter("types", item)}
+                  />
                   <span className="custom-checkbox">
                     <CheckIcon size={16} weight="bold" />
                   </span>
@@ -126,7 +157,12 @@ function FilterButton() {
           {["Under 2", "2-3", "3-4", "4-5"].map((item) => {
             return (
               <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input type="checkbox" className="peer sr-only" />
+                <input
+                  type="checkbox"
+                  className="peer sr-only"
+                  checked={filters.ratings.includes(item)}
+                  onChange={() => toggleFilter("ratings", item)}
+                />
                 <span className="custom-checkbox">
                   <CheckIcon size={16} weight="bold" />
                 </span>
@@ -141,7 +177,12 @@ function FilterButton() {
             (item) => {
               return (
                 <label className="flex items-center gap-2 cursor-pointer select-none">
-                  <input type="checkbox" className="peer sr-only" />
+                  <input
+                    type="checkbox"
+                    className="peer sr-only"
+                    checked={filters.amenities.includes(item)}
+                    onChange={() => toggleFilter("amenities", item)}
+                  />
                   <span className="custom-checkbox">
                     <CheckIcon size={16} weight="bold" />
                   </span>
@@ -212,11 +253,19 @@ function FilterButton() {
                 <CurrencyEurIcon size={16} weight="bold" />
               </button>
             </div>
-            <div className="hidden flex-col items-end font-sans gap-1 filter">
+            <div
+              className="hidden flex-col items-end font-sans gap-1 filter"
+              data-filter-key="prices"
+            >
               {["Under €50", "€50-100", "€100-200", "€200+"].map((item) => {
                 return (
                   <label className="flex items-center gap-2 select-none">
-                    <input type="checkbox" className="peer sr-only" />
+                    <input
+                      type="checkbox"
+                      className="peer sr-only"
+                      checked={filters.prices.includes(item)}
+                      onChange={() => toggleFilter("prices", item)}
+                    />
                     <span className="filter-label">{item}</span>
                   </label>
                 );
@@ -230,12 +279,20 @@ function FilterButton() {
                 <BuildingOfficeIcon size={16} weight="bold" />
               </button>
             </div>
-            <div className="hidden flex-col items-end font-sans gap-1 filter">
+            <div
+              className="hidden flex-col items-end font-sans gap-1 filter"
+              data-filter-key="types"
+            >
               {["Hotel", "Apartment", "Hostel", "Villa", "Guesthouse"].map(
                 (item) => {
                   return (
                     <label className="flex items-center gap-2 select-none">
-                      <input type="checkbox" className="peer sr-only" />
+                      <input
+                        type="checkbox"
+                        className="peer sr-only"
+                        checked={filters.types.includes(item)}
+                        onChange={() => toggleFilter("types", item)}
+                      />
                       <span className="filter-label">{item}</span>
                     </label>
                   );
@@ -250,11 +307,19 @@ function FilterButton() {
                 <StarIcon size={16} weight="bold" />
               </button>
             </div>
-            <div className="hidden flex-col items-end font-sans gap-1 filter ">
+            <div
+              className="hidden flex-col items-end font-sans gap-1 filter "
+              data-filter-key="ratings"
+            >
               {["Under 2", "2-3", "3-4", "4-5"].map((item) => {
                 return (
                   <label className="flex items-center gap-2 select-none">
-                    <input type="checkbox" className="peer sr-only" />
+                    <input
+                      type="checkbox"
+                      className="peer sr-only"
+                      checked={filters.ratings.includes(item)}
+                      onChange={() => toggleFilter("ratings", item)}
+                    />
                     <span className="filter-label">{item}</span>
                   </label>
                 );
@@ -268,12 +333,20 @@ function FilterButton() {
                 <PuzzlePieceIcon size={16} weight="bold" />
               </button>
             </div>
-            <div className="hidden flex-col items-end font-sans gap-1 filter">
+            <div
+              className="hidden flex-col items-end font-sans gap-1 filter"
+              data-filter-key="amenities"
+            >
               {["Free Wi-Fi", "Breakfast", "Parking", "Pets allowed"].map(
                 (item) => {
                   return (
                     <label className="flex items-center gap-2 select-none">
-                      <input type="checkbox" className="peer sr-only" />
+                      <input
+                        type="checkbox"
+                        className="peer sr-only"
+                        checked={filters.amenities.includes(item)}
+                        onChange={() => toggleFilter("amenities", item)}
+                      />
                       <span className="filter-label">{item}</span>
                     </label>
                   );
@@ -293,7 +366,10 @@ function FilterButton() {
                 (item) => {
                   return (
                     <label className="flex items-center gap-2 select-none">
-                      <input type="checkbox" className="peer sr-only" />
+                      <input
+                        type="checkbox"
+                        className="peer sr-only legacy-filter"
+                      />
                       <span className="filter-label">{item}</span>
                     </label>
                   );
@@ -317,7 +393,10 @@ function FilterButton() {
               ].map((item) => {
                 return (
                   <label className="flex items-center gap-2 select-none">
-                    <input type="checkbox" className="peer sr-only" />
+                    <input
+                      type="checkbox"
+                      className="peer sr-only legacy-filter"
+                    />
                     <span className="filter-label">{item}</span>
                   </label>
                 );
@@ -336,7 +415,10 @@ function FilterButton() {
                 (item) => {
                   return (
                     <label className="flex items-center gap-2 select-none">
-                      <input type="checkbox" className="peer sr-only" />
+                      <input
+                        type="checkbox"
+                        className="peer sr-only legacy-filter"
+                      />
                       <span className="filter-label">{item}</span>
                     </label>
                   );

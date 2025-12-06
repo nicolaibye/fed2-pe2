@@ -14,6 +14,7 @@ import ErrorComp from "../ErrorComp/index.tsx";
 import LoadingComp from "../LoadingComp/index.tsx";
 import { Link } from "react-router-dom";
 import { useSearchContext } from "../../context/SearchContext/useSearchContext";
+import { useFilterContext } from "../../context/FilterContext/useFilterContext.ts";
 
 const url = "https://v2.api.noroff.dev/holidaze/venues?_bookings=true";
 
@@ -22,6 +23,7 @@ function VenueLandscapeListing() {
   const { data: posts, isLoading, isError } = useApi<Venue>(url);
   const { numberOfDays, startDate, endDate, numberOfGuests, location } =
     useSearchContext();
+  const { filters } = useFilterContext();
   const venues = useMemo(() => {
     if (!posts) return null;
     return addExtraLabels(posts);
@@ -63,12 +65,50 @@ function VenueLandscapeListing() {
       return true;
     });
   }, [venues, startDate, endDate, numberOfGuests, location]);
+
+  const fullyFilteredVenues = useMemo(() => {
+    if (!filteredVenues) return [];
+
+    return filteredVenues.filter((venue) => {
+      if (filters.prices.length > 0) {
+        const venuePrice = venue.price;
+        const matchPrice = filters.prices.some((priceRange) => {
+          if (priceRange === "Under €50") return venuePrice < 50;
+          if (priceRange === "€50-100")
+            return venuePrice >= 51 && venuePrice <= 100;
+          if (priceRange === "€100-200")
+            return venuePrice >= 101 && venuePrice <= 200;
+          if (priceRange === "€200+") return venuePrice > 201;
+        });
+        if (!matchPrice) return false;
+      }
+
+      if (filters.types.length > 0) {
+        const matchesType = filters.types.some((type) =>
+          venue.name.toLowerCase().includes(type.toLowerCase())
+        );
+
+        if (!matchesType) return false;
+      }
+
+      if (filters.amenities.length > 0) {
+        const amenities = venue.meta;
+        const matchAmenities = filters.amenities.every((amenity) => {
+          if (amenity === "Free Wi-Fi") return amenities.wifi;
+          if (amenity === "Breakfast") return amenities.breakfast;
+          if (amenity === "Parking") return amenities.parking;
+          if (amenity === "Pets allowed") return amenities.pets;
+        });
+        if (!matchAmenities) return false;
+      }
+      return true;
+    });
+  }, [filteredVenues, filters]);
+
   const topVenues = useMemo(() => {
     if (!venues) return null;
-    const venuesToUse = filteredVenues ? filteredVenues : venues;
-    return venuesToUse.filter((venue) => venue.rating >= 4);
-  }, [venues, filteredVenues]);
-
+    return fullyFilteredVenues.filter((venue) => venue.rating >= 4);
+  }, [venues, fullyFilteredVenues]);
   function buildBookingPayload(id: string) {
     return {
       dateFrom: startDate?.toISOString(),
@@ -120,7 +160,7 @@ function VenueLandscapeListing() {
       {topVenues?.map((post) => (
         <li
           key={post.id}
-          className={`w-[90%] max-w-90 shrink-0 h-52 rounded-sm flex ${adventureType === "affluent" ? "flex-col" : "flex-row"} relative`}
+          className={`w-[90%] max-w-90 shrink-0 h-52 rounded-sm flex ${adventureType === "affluent" ? "flex-col" : "flex-row"} relative z-0`}
         >
           <Link to={`/venue/${post.id}`} className="absolute inset-0 z-10" />
           <img

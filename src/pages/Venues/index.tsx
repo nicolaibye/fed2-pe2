@@ -2,8 +2,11 @@ import VenueSquareListing from "../../comp/VenueSquareListing";
 import GoogleMapsSearch from "../../comp/GoogleMapsSearch";
 import FilterButton from "../../comp/FilterButton";
 import VenueLandscapeListing from "../../comp/VenueLandscapeListing";
+import { useFilterContext } from "../../context/FilterContext/useFilterContext";
 
 function Venues() {
+  const { filters, setSearch } = useFilterContext();
+
   return (
     <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-10 w-full lg:mx-auto lg:max-w-7xl">
       <section className="flex flex-col gap-7 overflow-x-scroll no-scrollbar">
@@ -20,11 +23,13 @@ function Venues() {
             aria-expanded="false"
             aria-description=""
             placeholder="Looking for anything specific?"
+            value={filters.search}
+            onChange={(e) => setSearch(e.target.value)}
           ></input>
         </div>
         <div>
           <h2 className="text-2xl font-serif font-bold mb-2">Top Venues</h2>
-          <ul className="flex flex-row gap-4 overflow-x-scroll rounded-xs no-scrollbar">
+          <ul className="flex flex-row gap-4 overflow-x-scroll rounded-xs no-scrollbar z-0">
             <VenueLandscapeListing />
           </ul>
         </div>
