@@ -124,10 +124,6 @@ function EditVenue() {
     }));
   }
 
-  useEffect(() => {
-    console.log("Updated bodyReg:", bodyReg);
-  }, [bodyReg]);
-
   async function handleVenueSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {

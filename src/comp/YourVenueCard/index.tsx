@@ -34,8 +34,6 @@ function YourVenueCard() {
   );
   const venues = data || [];
 
-  console.log(venues);
-
   function handleDelete(venueId: string) {
     fetch(`https://v2.api.noroff.dev/holidaze/venues/${venueId}`, {
       method: "DELETE",
