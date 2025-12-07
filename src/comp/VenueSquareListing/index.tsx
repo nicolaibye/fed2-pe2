@@ -36,6 +36,9 @@ function VenueSquareListing() {
   const filteredVenues = useMemo(() => {
     if (!venues) return [];
     return venues.filter((venue) => {
+      if (venue.media.length === 0) {
+        return false;
+      }
       if (startDate && endDate) {
         const overlap = venue.bookings.some((booking) => {
           return rangesOverlap(
@@ -179,8 +182,8 @@ function VenueSquareListing() {
           <Link to={`/venue/${post.id}`} className="absolute inset-0 z-10" />
           <div className="flex-1 relative h-full w-full overflow-hidden">
             <img
-              src={post.media[0].url}
-              alt={post.media[0].alt}
+              src={post.media[0].url || ""}
+              alt={post.media[0].alt || ""}
               className="object-cover w-full h-full rounded-t-xs"
             />
             {adventureType === "affluent" ? (
