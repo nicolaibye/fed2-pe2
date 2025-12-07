@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router";
 import { SearchProvider } from "./context/SearchContext/index.tsx";
 import { AdventureProvider } from "./context/AdventureContext/index.tsx";
 import { FilterProvider } from "./context/FilterContext/index.tsx";
+import { ToastProvider } from "./context/ToastContext/";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
@@ -13,7 +14,9 @@ createRoot(document.getElementById("root")!).render(
       <SearchProvider>
         <AdventureProvider>
           <FilterProvider>
-            <App />
+            <ToastProvider>
+              <App />
+            </ToastProvider>
           </FilterProvider>
         </AdventureProvider>
       </SearchProvider>

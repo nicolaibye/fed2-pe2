@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { CheckIcon } from "@phosphor-icons/react";
+import { ToastContext } from "../../context/ToastContext/useToastContext";
+import { useContext } from "react";
 
 function LoginRegisterForm() {
+  const { showToast } = useContext(ToastContext);
   const [register, setRegister] = useState(true);
   const [bodyReg, setBodyReg] = useState({
     name: "",
@@ -54,11 +57,18 @@ function LoginRegisterForm() {
         },
       });
       if (!response.ok) {
-        throw new Error("Registration failed");
+        const errorData = await response.json();
+        const messages = errorData.errors?.map(
+          (error: { message: string }) => error.message
+        );
+        showToast("error", messages || "Registration failed");
+        return;
       }
       setRegister(false);
+      showToast("success", "Registration successful! Please log in.");
     } catch (error) {
       console.error(error);
+      showToast("error", (error as Error).message);
     }
   }
 
@@ -86,9 +96,13 @@ function LoginRegisterForm() {
       const data = await response.json();
       localStorage.setItem("token", data.data.accessToken);
       localStorage.setItem("user", JSON.stringify(data.data.name));
-      window.location.href = "/";
+      showToast("success", "Login successful!");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
     } catch (error) {
       console.error(error);
+      showToast("error", (error as Error).message);
     }
   }
 

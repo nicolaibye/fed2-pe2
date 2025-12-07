@@ -15,10 +15,14 @@ import LoadingComp from "../LoadingComp/index.tsx";
 import { Link } from "react-router-dom";
 import { useSearchContext } from "../../context/SearchContext/useSearchContext";
 import { useFilterContext } from "../../context/FilterContext/useFilterContext.ts";
+import { useContext } from "react";
+import { ToastContext } from "../../context/ToastContext/useToastContext";
 
 const url = "https://v2.api.noroff.dev/holidaze/venues?_bookings=true";
 
 function VenueLandscapeListing() {
+  const { showToast } = useContext(ToastContext);
+
   const { adventureType } = useAdventureContext();
   const { data: posts, isLoading, isError } = useApi<Venue>(url);
   const { numberOfDays, startDate, endDate, numberOfGuests, location } =
@@ -140,10 +144,11 @@ function VenueLandscapeListing() {
         throw new Error();
       }
       if (response.ok) {
-        alert("Booking successful!");
+        showToast("success", "Booking successful!");
       }
     } catch (error) {
       console.error(error);
+      showToast("error", (error as Error).message);
     }
   }
 

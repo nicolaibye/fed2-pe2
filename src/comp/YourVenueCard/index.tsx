@@ -5,9 +5,12 @@ import type { Venue } from "../../types/venue.ts";
 import LoadingComp from "../../comp/LoadingComp";
 import ErrorComp from "../../comp/ErrorComp";
 import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useContext } from "react";
+import { ToastContext } from "../../context/ToastContext/useToastContext";
 
 function YourVenueCard() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { showToast } = useContext(ToastContext);
   const loggedInUser = localStorage.getItem("user")?.replace(/"/g, "");
   const token = localStorage.getItem("token");
   const urlPath = window.location.pathname;
@@ -45,13 +48,14 @@ function YourVenueCard() {
     })
       .then((response) => {
         if (response.ok) {
-          window.location.reload();
+          showToast("success", "Venue successfully deleted!");
         } else {
           throw new Error("Failed to delete venue");
         }
       })
       .catch((error) => {
         console.error(error);
+        showToast("error", (error as Error).message);
       });
   }
 

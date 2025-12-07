@@ -6,8 +6,12 @@ import type { User } from "../../../types/profile.ts";
 import LoadingComp from "../../../comp/LoadingComp";
 import ErrorComp from "../../../comp/ErrorComp";
 import { useSearchParams } from "react-router-dom";
+import { useContext } from "react";
+import { ToastContext } from "../../../context/ToastContext/useToastContext";
 
 function AccountSettings() {
+  const { showToast } = useContext(ToastContext);
+
   const token = localStorage.getItem("token");
   const loggedInUser = localStorage.getItem("user")?.replace(/"/g, "");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -90,9 +94,6 @@ function AccountSettings() {
           },
         }
       );
-      if (!response.ok) {
-        throw new Error("Registration failed");
-      }
       if (response.ok) {
         const overlay = document.getElementById("edit-overlay");
         if (overlay) {
@@ -102,9 +103,11 @@ function AccountSettings() {
           searchParams.delete("settings");
           setSearchParams(searchParams);
         }
+        showToast("success", "Update successful!");
       }
     } catch (error) {
       console.error(error);
+      showToast("error", (error as Error).message);
     }
   }
 

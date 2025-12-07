@@ -5,8 +5,12 @@ import LoadingComp from "../../comp/LoadingComp";
 import ErrorComp from "../../comp/ErrorComp";
 import { format } from "date-fns";
 import { CalendarXIcon } from "@phosphor-icons/react";
+import { useContext } from "react";
+import { ToastContext } from "../../context/ToastContext/useToastContext";
 
 function UpcomingTrip() {
+  const { showToast } = useContext(ToastContext);
+
   const loggedInUser = localStorage.getItem("user")?.replace(/"/g, "");
   const token = localStorage.getItem("token");
   const userFetchOptions = useMemo(
@@ -42,13 +46,17 @@ function UpcomingTrip() {
     })
       .then((response) => {
         if (response.ok) {
-          window.location.reload();
+          showToast("success", "Trip cancelled!");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         } else {
-          throw new Error("Failed to cancel trip");
+          throw new Error();
         }
       })
       .catch((error) => {
         console.error(error);
+        showToast("error", (error as Error).message);
       });
   }
 

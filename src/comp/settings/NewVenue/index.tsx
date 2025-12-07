@@ -6,8 +6,12 @@ import {
   StarIcon,
 } from "@phosphor-icons/react";
 import { useSearchParams } from "react-router-dom";
+import { useContext } from "react";
+import { ToastContext } from "../../../context/ToastContext/useToastContext";
 
 function NewVenue() {
+  const { showToast } = useContext(ToastContext);
+
   const token = localStorage.getItem("token");
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -102,9 +106,6 @@ function NewVenue() {
           },
         }
       );
-      if (!response.ok) {
-        throw new Error();
-      }
       if (response.ok) {
         const overlay = document.getElementById("edit-overlay");
         if (overlay) {
@@ -114,9 +115,11 @@ function NewVenue() {
           searchParams.delete("newVenue");
           setSearchParams(searchParams);
         }
+        showToast("success", "Venue created!");
       }
     } catch (error) {
       console.error(error);
+      showToast("error", (error as Error).message);
     }
   }
 

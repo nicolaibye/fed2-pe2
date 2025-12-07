@@ -3,8 +3,12 @@ import { format } from "date-fns";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../hook/useApi";
 import type { Venue } from "../../types/venue";
+import { useContext } from "react";
+import { ToastContext } from "../../context/ToastContext/useToastContext";
 
 function MobileReserveBar() {
+  const { showToast } = useContext(ToastContext);
+
   const { startDate, endDate, numberOfDays, numberOfGuests } =
     useSearchContext();
   const url = "https://v2.api.noroff.dev/holidaze/venues";
@@ -37,14 +41,12 @@ function MobileReserveBar() {
           },
         }
       );
-      if (!response.ok) {
-        throw new Error();
-      }
       if (response.ok) {
-        alert("Booking successful!");
+        showToast("success", "Booking successful!");
       }
     } catch (error) {
       console.error(error);
+      showToast("error", (error as Error).message);
     }
   }
 

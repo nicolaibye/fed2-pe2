@@ -11,8 +11,12 @@ import type { Venue } from "../../../types/venue.ts";
 import LoadingComp from "../../../comp/LoadingComp";
 import ErrorComp from "../../../comp/ErrorComp";
 import { useMemo } from "react";
+import { useContext } from "react";
+import { ToastContext } from "../../../context/ToastContext/useToastContext";
 
 function EditVenue() {
+  const { showToast } = useContext(ToastContext);
+
   const token = localStorage.getItem("token");
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -139,9 +143,6 @@ function EditVenue() {
           },
         }
       );
-      if (!response.ok) {
-        throw new Error();
-      }
       if (response.ok) {
         const overlay = document.getElementById("edit-overlay");
         if (overlay) {
@@ -151,9 +152,11 @@ function EditVenue() {
           searchParams.delete("editVenue");
           setSearchParams(searchParams);
         }
+        showToast("success", "Venue updated!");
       }
     } catch (error) {
       console.error(error);
+      showToast("error", (error as Error).message);
     }
   }
 

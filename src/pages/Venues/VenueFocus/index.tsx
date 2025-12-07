@@ -21,10 +21,14 @@ import LoadingComp from "../../../comp/LoadingComp/index.tsx";
 import ErrorComp from "../../../comp/ErrorComp/index.tsx";
 import { Link } from "react-router-dom";
 import { useSearchContext } from "../../../context/SearchContext/useSearchContext.ts";
+import { useContext } from "react";
+import { ToastContext } from "../../../context/ToastContext/useToastContext";
 
 const url = "https://v2.api.noroff.dev/holidaze/venues";
 
 function VenueFocus() {
+  const { showToast } = useContext(ToastContext);
+
   const [hearted, setHearted] = useState(false);
   const {
     numberOfDays,
@@ -89,10 +93,11 @@ function VenueFocus() {
         throw new Error();
       }
       if (response.ok) {
-        alert("Booking successful!");
+        showToast("success", "Booking successful!");
       }
     } catch (error) {
       console.error(error);
+      showToast("error", (error as Error).message);
     }
   }
 
