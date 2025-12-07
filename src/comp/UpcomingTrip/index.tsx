@@ -47,9 +47,6 @@ function UpcomingTrip() {
       .then((response) => {
         if (response.ok) {
           showToast("success", "Trip cancelled!");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
         } else {
           throw new Error();
         }
