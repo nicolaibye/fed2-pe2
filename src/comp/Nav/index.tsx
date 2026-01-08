@@ -53,7 +53,7 @@ function Nav() {
           </NavLink>
         </li>
         <div className="bg-hdRedAccent h-auto w-px"></div>
-        <li className="flex-1">
+        <li className="flex-1 pointer-events-none">
           <NavLink
             to="/trips"
             className={({ isActive }) =>
@@ -169,7 +169,7 @@ function Nav() {
           </NavLink>
         </li>
         <div className="bg-hdRedAccent h-auto w-px"></div>
-        <li className="flex-1">
+        <li className="flex-1 pointer-events-none">
           <NavLink
             to="/chat"
             className={({ isActive }) =>

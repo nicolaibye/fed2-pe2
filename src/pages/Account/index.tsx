@@ -98,6 +98,7 @@ function Account() {
       <div className="relative h-38 -mx-5 -mt-5 md:-mx-10 md:-mt-10 bg-hdRed">
         <div className="absolute inset-1 bg-[url(/SwirlPattern.svg)] w-full h-full top-0 left-0 bg-repeat">
           <img
+            id="banner-pic"
             src={user?.banner.url || ""}
             alt={user ? `${user?.name}'s banner` : "User banner"}
             className="object-cover w-full h-38"
@@ -105,6 +106,7 @@ function Account() {
         </div>
         <div className="absolute flex flex-row gap-3 items-end justify-center lg:justify-start p-5 -bottom-20 lg:min-w-3xl lg:left-1/2 lg:-translate-x-1/2">
           <img
+            id="profile-pic"
             src={user?.avatar.url || ""}
             alt={user ? `${user?.name}'s avatar` : "User avatar"}
             className="aspect-square w-30 h-auto object-cover object-top rounded-sm border-2 border-hdRed base-shadow"

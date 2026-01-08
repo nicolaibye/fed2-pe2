@@ -141,7 +141,10 @@ function VenueLandscapeListing() {
         }
       );
       if (!response.ok) {
-        throw new Error();
+        const errorData = await response.json();
+        throw new Error(
+          errorData.errors?.[0]?.message || "Failed to book venue"
+        );
       }
       if (response.ok) {
         showToast("success", "Booking successful!");
