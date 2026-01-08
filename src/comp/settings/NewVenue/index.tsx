@@ -106,6 +106,12 @@ function NewVenue() {
           },
         }
       );
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.errors?.[0]?.message || "Failed to create venue"
+        );
+      }
       if (response.ok) {
         const overlay = document.getElementById("edit-overlay");
         if (overlay) {
@@ -163,14 +169,6 @@ function NewVenue() {
       location: bodyReg.location,
     };
   }
-
-  //   if (isLoading) {
-  //     return <LoadingComp />;
-  //   }
-
-  //   if (isError) {
-  //     return <ErrorComp />;
-  //   }
 
   return (
     <form action="" className="flex flex-col w-full p-5 pb-10 gap-2">

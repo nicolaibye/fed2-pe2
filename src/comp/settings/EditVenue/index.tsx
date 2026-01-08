@@ -143,6 +143,12 @@ function EditVenue() {
           },
         }
       );
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.errors?.[0]?.message || "Failed to update venue"
+        );
+      }
       if (response.ok) {
         const overlay = document.getElementById("edit-overlay");
         if (overlay) {

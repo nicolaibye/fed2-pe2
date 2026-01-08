@@ -1,6 +1,7 @@
 import Header from "../Header";
 import { Outlet } from "react-router-dom";
 import Footer from "../Footer";
+import ToastList from "../ToastList";
 
 function Layout() {
   return (
@@ -8,6 +9,7 @@ function Layout() {
       <Header />
       <main className="p-5 pb-20 md:p-10 md:pb-0 flex-1">
         <Outlet />
+        <ToastList />
       </main>
       <Footer />
     </div>

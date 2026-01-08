@@ -94,6 +94,12 @@ function AccountSettings() {
           },
         }
       );
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.errors?.[0]?.message || "Failed to update profile"
+        );
+      }
       if (response.ok) {
         const overlay = document.getElementById("edit-overlay");
         const profilePic = document.getElementById(
