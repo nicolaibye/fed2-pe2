@@ -96,12 +96,24 @@ function AccountSettings() {
       );
       if (response.ok) {
         const overlay = document.getElementById("edit-overlay");
+        const profilePic = document.getElementById(
+          "profile-pic"
+        ) as HTMLImageElement;
+        const bannerPic = document.getElementById(
+          "banner-pic"
+        ) as HTMLImageElement;
         if (overlay) {
           overlay.classList.toggle("hidden");
           overlay.classList.toggle("flex");
           document.body.classList.toggle("overflow-hidden");
           searchParams.delete("settings");
           setSearchParams(searchParams);
+        }
+        if (profilePic) {
+          profilePic.src = bodyReg.avatarUrl;
+        }
+        if (bannerPic) {
+          bannerPic.src = bodyReg.bannerUrl;
         }
         showToast("success", "Update successful!");
       }
