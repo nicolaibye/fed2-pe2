@@ -27,7 +27,7 @@ const inspireMockups = [
   },
   {
     country: "New Zealand",
-    url: "https://images.pexels.com/photos/5358788/pexels-photo-5358788.jpeg",
+    url: "https://images.pexels.com/photos/8230087/pexels-photo-8230087.jpeg",
     body: "A place shaped by adventure and respect for the land. New Zealand pushes you toward bold choices, bigger horizons, and a mindset grounded in exploration.",
     link: "/",
   },
