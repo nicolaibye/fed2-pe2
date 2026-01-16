@@ -1,5 +1,7 @@
 # Project Exam 2 - Holidaze
 
+<img width="1367" height="874" alt="image" src="https://github.com/user-attachments/assets/20b85afe-457c-49ba-b377-85e4012a171e" />
+
 This project is an accommodation booking site written with Vite/React. You can check out the live website [here.](https://nabholidaze.netlify.app/)
 
 ## How to run the project
